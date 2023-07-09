@@ -21,9 +21,96 @@ import java.util.regex.Pattern;
 import javax.xml.stream.events.Characters;
 
 public class StringWordCount {
+	
+	String generateWord(int n) {
+		if(n<2) return "invalid";
+		List<String> list = new ArrayList<>();
+		list.add("b");
+		list.add("a");
+		
+		list = supportGenerateWord(list, n-2);
+		
+		String result = "";
+		for(String s:list) result = result+ ", "+s;
+		
+		return result.substring(1).trim();
+	}
+
+	private List<String> supportGenerateWord(List<String> list, int n) {
+		if(n>0) {
+			String str = list.get(list.size()-1)+list.get(list.size()-2);
+			list.add(str);
+			list = supportGenerateWord(list, n-1);
+		}
+		return list;
+	}
 
 	TriangleDots td;
+	String reverseLegoYoda(String text) {
+		String result = "";
+		
+		String[] s1 = text.split("\\.");
+		for(int i =0; i<s1.length;i++) {
+			String[] s2 = s1[i].split(",");
+			for(int j = s2.length-1;j>=0;j--) {
+				s2[j] = s2[j].trim();
+				if(j==0) {
+					result = result+ " "+ s2[j].trim().substring(0,1).toLowerCase().concat(s2[j].substring(1))+".";
+				continue;
+				}
+				result = result+ " "+ s2[j].substring(0,1).toUpperCase().concat(s2[j].substring(1));
+			}
+			result = result.trim();
+		}
+		
+		return result.trim();
+	}
 	
+	boolean validColor(String color) {
+		
+		String[] c = color.replaceAll(" ", "").split("\\(");
+		if(c[0].length()==4) {
+			return validColorRgba(c[1]);
+		}
+		if(c[0].length()==3) {
+			System.out.println(c[1]);
+			return validColorRgb(c[1]);
+		}
+		return false;
+	}
+	
+	private boolean validColorRgba(String string) {
+
+		String[] str = string.replaceAll("[^0-9,\\.-]", "").split(",");
+		if(str.length!=4 )return false;
+		for(int i =0; i<str.length;i++) {
+			if(str[i].length()==0)return false;
+			if(i==3 ) {
+				if(Double.parseDouble(str[i])>1 || Double.parseDouble(str[i])<0) {
+					return false;
+				}
+				continue;
+			}
+			int color = Integer.parseInt(str[i]);
+			if(color<0 || color>255) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	private boolean validColorRgb(String string) {
+//		System.out.println(string);
+		String[] str = string.replaceAll("[^0-9,-]", "").split(",");
+		
+		for(int i =0; i<str.length;i++) {
+			if(str[i].length()==0)return false;
+			int color = Integer.parseInt(str[i]);
+			if(color<0 || color>255) return false;
+		}
+		return true;
+	}
+
 	String numToEng(int n) {
 		String result = "";
 		
@@ -3500,7 +3587,10 @@ public class StringWordCount {
 //		System.out.println(swc.minSwaps("100100100111"));
 //		System.out.println(swc.sentencePrimeness("Help me!"));
 //		System.out.println(swc.longestNonrepeatingSubstring("abddefgh"));
-		System.out.println(swc.numToEng(26));
+//		System.out.println(swc.numToEng(26));
+//		System.out.println(swc.validColor("rgba(0,0,0,1.1)"));
+//		System.out.println(swc.reverseLegoYoda("An alien, I am. Holding me captive in Area 51, the government is."));
+		System.out.println(swc.generateWord(21));
 	}
 
 }

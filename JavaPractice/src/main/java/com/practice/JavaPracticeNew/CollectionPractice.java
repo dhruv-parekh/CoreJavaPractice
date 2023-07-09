@@ -23,7 +23,44 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class CollectionPractice {
+	
+	int singleNumber(int[] n) {
+		
+		List<Integer> list = Arrays.stream(n).boxed().toList();
+		for(Integer i:list) {
+			if(list.indexOf(i)==list.lastIndexOf(i)) return i;
+		}
+		return 0;
+	}
 
+	
+	 int bonacci(int n, int k) {
+		
+		List<Integer> list = new ArrayList<>();
+		
+		for(int i =0; i<n; i++) {
+			if(i==n-1) {
+				list.add(1);
+				continue;
+			}
+			list.add(0);
+		}
+		System.out.println("before :"+list);
+		int index =n;
+		
+		while(list.size()<k) {
+			int sum = 0;
+			int in = index-n;
+			while(in<index) {
+				sum+=list.get(in);
+				in++;
+			}
+			list.add(sum);
+			index++;
+		}
+		System.out.println("after :"+list);
+		return list.get(k-1);
+	}
 	boolean oddOneOut(String[] arr) {
 
 		List<Integer> list = new ArrayList<>();
@@ -589,8 +626,10 @@ public class CollectionPractice {
 //		System.out.println(Arrays.toString(cp.mostFrequentChar(new String[] {"potion", "master", "professor", "snape"})));
 //		System.out.println(cp.blockPlayer(6,4));
 //		System.out.println(cp.countUniqueBooks("&4&3&3&", '&'));
-		System.out.println(cp.shuffleCount(14));
+//		System.out.println(cp.shuffleCount(14));
 //		System.out.println(cp.oddOneOut(new String[] {"very", "to", "then", "some","me","he"}));
+//		System.out.println(cp.bonacci(5, 10));
+		System.out.println(cp.singleNumber(new int[] {-1, 2, -4, 20, -1, 2, -4, -4, 2, -1}));
 
 	}
 

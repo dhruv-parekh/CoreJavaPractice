@@ -10,6 +10,7 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Year;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -27,6 +28,111 @@ import java.util.stream.IntStream;
 public class TriangleDots {
 	StringWordCount swc;
 	
+	int split25(int num) {
+		
+		if(num >= 1 && num<5) return num;
+		int n3 = 0;
+		int n2 = 0;
+		int temp = num;
+		while(temp>0) {
+			temp = temp-3;
+			n3++;
+			
+			if(temp !=0 && temp<3) {
+				if(temp == 2) n2=1;
+				if(temp == 1) {
+					n2 = 2;
+					n3--;
+				}
+				temp = 0;
+			}
+		}
+		return (int)(Math.pow(3, n3)*Math.pow(2, n2));
+	}
+
+	boolean isLeapYear(int y) {
+		return Year.isLeap(y);
+//		  int a = y%100;
+//		  int b = y%400;
+//		  int c = y%4;
+//		  return b-400*a+100000*c <= 0;
+	}
+
+	String takeDownAveragBy5(String[] scores) {
+		int sum = 0;
+		int len = scores.length;
+		for (int i = 0; i < len; i++) {
+			int temp = Integer.parseInt(scores[i].replaceAll("[\\D]", ""));
+			sum += temp;
+		}
+		double expectedAvg = ((double) sum / len) - 5;
+		int result = (int) Math.round(((double) (expectedAvg * (len + 1))) - sum);
+		return Integer.toString(result).concat("%");
+	}
+
+	int[] isbn13sidefFunction(String str) {
+
+		int[] list13 = { 1, 3, 1, 3, 1, 3, 1, 3, 1, 3, 1, 3, 1 };
+		int sum = 0;
+		for (int i = 0; i < str.length(); i++) {
+			int n = Integer.parseInt(str.charAt(i) + "");
+			sum += (n * list13[i]);
+		}
+		return sum % 10 == 0 ? new int[] { sum, 1 } : new int[] { sum, 0 };
+	}
+
+	int[] isbn10sidefFunction(String str) {
+		int[] list10 = { 10, 9, 8, 7, 6, 5, 4, 3, 2, 1 };
+		int sum = 0;
+		for (int i = 0; i < str.length(); i++) {
+			int n = Integer.parseInt(str.charAt(i) + "");
+			sum += (n * list10[i]);
+		}
+		return sum % 11 == 0 ? new int[] { sum, 1 } : new int[] { sum, 0 };
+	}
+
+	String isbn13(String str) {
+		str = str.replaceAll("[^0-9]", "");
+		if (str.length() != 10 && str.length() != 13)
+			return "invalid";
+		if (str.length() == 13) {
+			int[] result = isbn13sidefFunction(str);
+			if (result[1] == 1)
+				return "valid isbn13";
+			return "invalid isbn13";
+		}
+
+		int[] result = isbn10sidefFunction(str);
+		if (result[1] == 1) {
+			str = "978" + str;
+			int[] res = isbn13sidefFunction(str);
+			int sum = res[0];
+			if (sum % 10 == 0)
+				return str;
+			int last = Integer.parseInt(str.charAt(str.length() - 1) + "");
+
+			for (int i = 0; i < 10; i++) {
+				int a = i + last;
+				int b = last - i;
+				if (a < 10) {
+
+					String temp = str.substring(0, str.length() - 1) + a;
+					int[] t = isbn13sidefFunction(temp);
+					if (t[1] == 1)
+						return temp;
+				}
+				if (b >= 0) {
+					String temp = str.substring(0, str.length() - 1) + b;
+					int[] t = isbn13sidefFunction(temp);
+					if (t[1] == 1)
+						return temp;
+				}
+
+			}
+		}
+		return "invalid";
+	}
+
 	int dayOfYear(String date) throws ParseException {
 //		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy",Locale.ENGLISH);
 //		String[] d = date.split("/");
@@ -37,23 +143,23 @@ public class TriangleDots {
 //		
 //		return (int)diff;
 		String[] d = date.split("/");
-		int year =Integer.parseInt(d[2]);
-		int month = Integer.parseInt(d[0])-1;
+		int year = Integer.parseInt(d[2]);
+		int month = Integer.parseInt(d[0]) - 1;
 		int day = Integer.parseInt(d[1]);
-		int days = year%4!=0 && month>2?(month*30)-2:(month*30); 
-		int misc = year%4==0?(month/2):(int)Math.ceilDiv(month,2);
-		int totalDays = days+day+ misc;
-		
+		int days = year % 4 != 0 && month > 2 ? (month * 30) - 2 : (month * 30);
+		int misc = year % 4 == 0 ? (month / 2) : (int) Math.ceilDiv(month, 2);
+		int totalDays = days + day + misc;
+
 		return totalDays;
 	}
-	
+
 	int titleToNumber(String s) {
-		
-		int ans=0;
-	       for(int i=0;i<s.length();i++)
-	           ans= ans*26+s.charAt(i)-'A'+1;
-	        return ans;
-		
+
+		int ans = 0;
+		for (int i = 0; i < s.length(); i++)
+			ans = ans * 26 + s.charAt(i) - 'A' + 1;
+		return ans;
+
 	}
 
 	int calcforPostfix(int a, int b, String sign) {
@@ -65,10 +171,10 @@ public class TriangleDots {
 		if (sign.equals("*"))
 			result = a * b;
 		if (sign.equals("/")) {
-			System.out.println(a+ " "+b);
+			System.out.println(a + " " + b);
 			result = a / b;
 		}
-			
+
 		return result;
 	}
 
@@ -84,22 +190,20 @@ public class TriangleDots {
 
 					if (!(a[i - 1].matches("[//*//+-//]")) && !(a[i - 2].matches("[//*//+-//]"))) {
 						System.out.println("here");
-						result = calcforPostfix(Integer.parseInt(a[i-2]), Integer.parseInt(a[i - 1]), a[i]);
+						result = calcforPostfix(Integer.parseInt(a[i - 2]), Integer.parseInt(a[i - 1]), a[i]);
 						list.add(result);
 						continue;
-					}
-					else if (!a[i - 1].matches("[//*//+-//]")) {
+					} else if (!a[i - 1].matches("[//*//+-//]")) {
 						System.out.println("here");
 						result = calcforPostfix(list.get(list.size() - 1), Integer.parseInt(a[i - 1]), a[i]);
 						list.add(result);
 						continue;
-					}
-					else {
+					} else {
 						System.out.println("else");
 						result = calcforPostfix(list.get(list.size() - 2), list.get(list.size() - 1), a[i]);
 						list.add(result);
 					}
-					
+
 				} else {
 					System.out.println("out");
 					result = calcforPostfix(Integer.parseInt(a[i - 2]), Integer.parseInt(a[i - 1]), a[i]);
@@ -2527,13 +2631,16 @@ public class TriangleDots {
 //		System.out.println(td.maxPossible(12345, 4));
 //		System.out.println(td.postfix("5"));
 //		System.out.println(td.titleToNumber("KFC"));
-		try {
-			System.out.println(td.dayOfYear("02/29/1600"));
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
+//		try {
+//			System.out.println(td.dayOfYear("02/29/1600"));
+//		} catch (ParseException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		System.out.println(td.isbn13("0316066524"));
+//		System.out.println(td.takeDownAveragBy5(new String[] {"53%", "79%"}));
+//		System.out.println(td.isLeapYear(2016));
+		System.out.println(td.split25(20));
 	}
 
 }

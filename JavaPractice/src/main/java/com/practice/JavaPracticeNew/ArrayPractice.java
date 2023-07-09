@@ -24,32 +24,71 @@ import com.practice.classes.Chapter;
 
 public class ArrayPractice {
 	
+	
+	boolean cannotCapture(int[][] b) {
+
+		for (int i = 0; i < 8; i++) {
+
+			for (int j = 0; j < 8; j++) {
+				if(b[i][j] == 1) {
+				if (i - 2 >= 0 && j + 1 < 8 && b[i - 2][j + 1] == 1) return false;
+				if (i + 2 <8 && j + 1 < 8 && b[i + 2][j + 1] == 1) return false;
+				if (i - 2 >= 0 && j -1 >=0 && b[i - 2][j - 1] == 1) return false;
+				if (i + 2 <8 && j -1 >=0 && b[i + 2][j -1] == 1) return false;
+				if (i - 1 >= 0 && j + 2 < 8 && b[i - 1][j + 2] == 1) return false;
+				if (i - 1 >= 0 && j -2 >=0 && b[i - 1][j -2] == 1) return false;
+				if (i +1 <8 && j + 2 < 8 && b[i +1][j + 2] == 1) return false;
+				if (i + 1 <8 && j -2 >=0 && b[i +1][j -2] == 1) return false;
+				}
+			}
+		}
+		return true;
+	}
+
+	Object[] flatten(Object[] arr) {
+
+		return flattenSideMethod(arr).toArray();
+
+	}
+
+	private List<Object> flattenSideMethod(Object[] arr) {
+		List<Object> result = new ArrayList<>();
+
+		for (int i = 0; i < arr.length; i++) {
+			if (arr[i] instanceof Object[]) {
+				result.addAll(flattenSideMethod((Object[]) arr[i]));
+			} else
+				result.add(arr[i]);
+		}
+
+		return result;
+	}
+
 	int[] numSplit(int n) {
 		int[] result = new int[Integer.toString(Math.abs(n)).length()];
-		int i =result.length-1;
+		int i = result.length - 1;
 		int pow = 0;
-		while(n!=0) {
-			result[i] = (n%10)*((int)Math.pow(10, pow));
+		while (n != 0) {
+			result[i] = (n % 10) * ((int) Math.pow(10, pow));
 			pow++;
 			i--;
-			n=n/10;
+			n = n / 10;
 		}
 		return result;
 	}
-	
-	
+
 	String[] sortWithoutArticles(String[] bands) {
-		
-		HashMap<String, String> hm =  new HashMap<>();
+
+		HashMap<String, String> hm = new HashMap<>();
 		String temp = "";
-		for(int i =0; i<bands.length;i++) {
-			temp =bands[i].replaceAll("The ", "").replaceAll("An ", "").replaceAll("A ", "");
+		for (int i = 0; i < bands.length; i++) {
+			temp = bands[i].replaceAll("The ", "").replaceAll("An ", "").replaceAll("A ", "");
 			hm.put(temp, bands[i]);
-			bands[i]=temp;
+			bands[i] = temp;
 		}
 		Arrays.sort(bands);
-		String[] result =  new String[bands.length];
-		for(int i =0; i<bands.length;i++) {
+		String[] result = new String[bands.length];
+		for (int i = 0; i < bands.length; i++) {
 			result[i] = hm.get(bands[i]);
 		}
 		return result;
@@ -58,23 +97,23 @@ public class ArrayPractice {
 	int[] quadSequence(int... args) {
 		List<Integer> list = new ArrayList<>();
 		int len = args.length;
-		for(int i = 0; i< len-1;i++) {
-			list.add(args[i+1]-args[i]);
+		for (int i = 0; i < len - 1; i++) {
+			list.add(args[i + 1] - args[i]);
 		}
 		int baseDifference = list.get(0);
-		int secondLevelDiff = list.get(1)-list.get(0);
-		System.out.println("base:"+baseDifference+" second:"+secondLevelDiff);
-		int multiplier =len-1;
+		int secondLevelDiff = list.get(1) - list.get(0);
+		System.out.println("base:" + baseDifference + " second:" + secondLevelDiff);
+		int multiplier = len - 1;
 		int[] result = new int[len];
-		int temp = args[len-1];
-		for(int i =0; i<len;i++) {
-			result[i]=temp+(baseDifference+(multiplier*secondLevelDiff));
+		int temp = args[len - 1];
+		for (int i = 0; i < len; i++) {
+			result[i] = temp + (baseDifference + (multiplier * secondLevelDiff));
 			multiplier++;
 			temp = result[i];
 		}
 		return result;
 	}
-	
+
 	int[] twoProduct(Integer[] arr, int n) {
 		int[] res = { 0, 0 };
 
@@ -99,7 +138,8 @@ public class ArrayPractice {
 
 			}
 		}
-		if(res[1]==0)return new int[] {}; 
+		if (res[1] == 0)
+			return new int[] {};
 
 		return res;
 	}
@@ -1814,7 +1854,12 @@ public class ArrayPractice {
 //		System.out.println(Arrays.toString(ap.twoProduct(new Integer[] { 3, 4, 5,  6, 7, 8, 9, 10}, 10)));
 //		System.out.println(Arrays.toString(ap.quadSequence(0,12,10)));
 //		System.out.println(Arrays.toString(ap.sortWithoutArticles(new String[] {"The Old American Rejects", "The Cure", "The Who", "Goo Goo Dolls", "The Bee Gees"})));
-		System.out.println(Arrays.toString(ap.numSplit(121317)));
+//		System.out.println(Arrays.toString(ap.numSplit(121317)));'
+//		System.out.println(Arrays.toString(ap.flatten(new Object[][] {
+//			{new Object[] {17.2, 500, "code"}, "generate"}})));
+		System.out.println(ap.cannotCapture(new int[][] {{1, 0, 1, 0, 1, 0, 1, 0}, {0, 1, 0, 1, 0, 1, 0, 1}, {0, 0, 0, 0, 1, 0, 1, 0}, {0, 0, 0, 0, 0, 0, 0, 1}, {1, 0, 0, 0, 1, 0, 1, 0}, {0, 0, 0, 0, 0, 1, 0, 1}, {1, 0, 0, 0, 1, 0, 1, 0}, {0, 0, 1, 1, 0, 1, 0, 1}}));
+		
+		
 	}
 
 }
