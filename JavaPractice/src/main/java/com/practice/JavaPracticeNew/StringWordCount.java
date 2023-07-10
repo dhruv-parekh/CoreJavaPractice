@@ -21,78 +21,146 @@ import java.util.regex.Pattern;
 import javax.xml.stream.events.Characters;
 
 public class StringWordCount {
-	
+
+	String correctTitle(String str) {
+		String result = "";
+		List<String> list = List.of("and", "the","of","in");
+		String[] s = str.toLowerCase().split(" ");
+		
+		for(int i =0; i<s.length; i++) {
+			if(list.contains(s[i])) {
+				result = result +" "+s[i];
+				continue;
+			}
+			result = result +" "+ Character.toUpperCase(s[i].charAt(0))+s[i].substring(1);
+		}
+		return result.trim();
+	}
+
+	boolean validName(String str) {
+
+		String[] s = str.split(" ");
+		if (s.length == 1 || s.length > 3)
+			return false;
+		for (int i = 0; i < s.length; i++) {
+			if (i == s.length - 1) {
+				if (s[i].length() < 2 || s[i].contains(".") || !Character.isUpperCase(s[i].charAt(0)))
+					return false;
+				continue;
+			}
+			if (i == 0 && s[i].length() > 2) {
+				if (s[i].contains(".") || !Character.isUpperCase(s[i].charAt(0)))
+					return false;
+				continue;
+			}
+			if (s[i].length() != 2 || !s[i].contains(".") || !Character.isUpperCase(s[i].charAt(0)))
+				return false;
+
+		}
+		return true;
+	}
+
+	String mixedNumber(String frac) {
+		String[] s = frac.split("/");
+		int numerator = Integer.parseInt(s[0]);
+		int denominator = Integer.parseInt(s[1]);
+//		System.out.println(numerator+" "+denominator);
+		int a = numerator / denominator;
+		int b = numerator % denominator;
+		int temp = b;
+		b = Math.abs(b);
+		if (b != 0) {
+			td = new TriangleDots();
+			int gcd = td.findGcd2(denominator, b);
+//			System.out.println(gcd+" " +b);
+			denominator = denominator / gcd;
+			b = b / gcd;
+
+		}
+		String left = a == 0 ? " " : a + " ";
+		String up = b == 0 ? a + "" : (temp < 0 && a == 0) ? "-" + b : b + "";
+		String down = b == 0 ? " " : "/" + denominator;
+
+		return b == 0 ? a + "" : (left + up + down).trim();
+
+	}
+
 	String generateWord(int n) {
-		if(n<2) return "invalid";
+		if (n < 2)
+			return "invalid";
 		List<String> list = new ArrayList<>();
 		list.add("b");
 		list.add("a");
-		
-		list = supportGenerateWord(list, n-2);
-		
+
+		list = supportGenerateWord(list, n - 2);
+
 		String result = "";
-		for(String s:list) result = result+ ", "+s;
-		
+		for (String s : list)
+			result = result + ", " + s;
+
 		return result.substring(1).trim();
 	}
 
 	private List<String> supportGenerateWord(List<String> list, int n) {
-		if(n>0) {
-			String str = list.get(list.size()-1)+list.get(list.size()-2);
+		if (n > 0) {
+			String str = list.get(list.size() - 1) + list.get(list.size() - 2);
 			list.add(str);
-			list = supportGenerateWord(list, n-1);
+			list = supportGenerateWord(list, n - 1);
 		}
 		return list;
 	}
 
 	TriangleDots td;
+
 	String reverseLegoYoda(String text) {
 		String result = "";
-		
+
 		String[] s1 = text.split("\\.");
-		for(int i =0; i<s1.length;i++) {
+		for (int i = 0; i < s1.length; i++) {
 			String[] s2 = s1[i].split(",");
-			for(int j = s2.length-1;j>=0;j--) {
+			for (int j = s2.length - 1; j >= 0; j--) {
 				s2[j] = s2[j].trim();
-				if(j==0) {
-					result = result+ " "+ s2[j].trim().substring(0,1).toLowerCase().concat(s2[j].substring(1))+".";
-				continue;
+				if (j == 0) {
+					result = result + " " + s2[j].trim().substring(0, 1).toLowerCase().concat(s2[j].substring(1)) + ".";
+					continue;
 				}
-				result = result+ " "+ s2[j].substring(0,1).toUpperCase().concat(s2[j].substring(1));
+				result = result + " " + s2[j].substring(0, 1).toUpperCase().concat(s2[j].substring(1));
 			}
 			result = result.trim();
 		}
-		
+
 		return result.trim();
 	}
-	
+
 	boolean validColor(String color) {
-		
+
 		String[] c = color.replaceAll(" ", "").split("\\(");
-		if(c[0].length()==4) {
+		if (c[0].length() == 4) {
 			return validColorRgba(c[1]);
 		}
-		if(c[0].length()==3) {
+		if (c[0].length() == 3) {
 			System.out.println(c[1]);
 			return validColorRgb(c[1]);
 		}
 		return false;
 	}
-	
+
 	private boolean validColorRgba(String string) {
 
 		String[] str = string.replaceAll("[^0-9,\\.-]", "").split(",");
-		if(str.length!=4 )return false;
-		for(int i =0; i<str.length;i++) {
-			if(str[i].length()==0)return false;
-			if(i==3 ) {
-				if(Double.parseDouble(str[i])>1 || Double.parseDouble(str[i])<0) {
+		if (str.length != 4)
+			return false;
+		for (int i = 0; i < str.length; i++) {
+			if (str[i].length() == 0)
+				return false;
+			if (i == 3) {
+				if (Double.parseDouble(str[i]) > 1 || Double.parseDouble(str[i]) < 0) {
 					return false;
 				}
 				continue;
 			}
 			int color = Integer.parseInt(str[i]);
-			if(color<0 || color>255) {
+			if (color < 0 || color > 255) {
 				return false;
 			}
 		}
@@ -102,54 +170,58 @@ public class StringWordCount {
 	private boolean validColorRgb(String string) {
 //		System.out.println(string);
 		String[] str = string.replaceAll("[^0-9,-]", "").split(",");
-		
-		for(int i =0; i<str.length;i++) {
-			if(str[i].length()==0)return false;
+
+		for (int i = 0; i < str.length; i++) {
+			if (str[i].length() == 0)
+				return false;
 			int color = Integer.parseInt(str[i]);
-			if(color<0 || color>255) return false;
+			if (color < 0 || color > 255)
+				return false;
 		}
 		return true;
 	}
 
 	String numToEng(int n) {
 		String result = "";
-		
-		String[] zeroToTwenty = {"zero","one","two", "three","four","five", "six","seven","eight", "nine","ten",
-				"eleven","twelve","thirteen", "forteen","fifteen","sixteen", "seventeen","eighteen","nineteen", "twenty"};
-		String[] tens = {"", "twenty","thirty","forty","fifty","sixty","seventy","eighty","ninety"};
-		if(n==0) result = "zero";
-		if(n<=20) result = zeroToTwenty[n];
-		if(n<100 && n> 20) result = tens[(n/10)-1]+" "+zeroToTwenty[(n%10)];
-		if(n>100) {
-			int n1 = n/100;
-			int temp = (n%100);
-			if (temp <20) {
-				result = zeroToTwenty[n1]+ " hundread "+ " "+ zeroToTwenty[temp];
-			}
-			else {
-				int n2 = temp/10;
-				n2 = n2==0 || n2==1?++n2:n2;
-				int n3 = (n%10);
-				result = zeroToTwenty[n1]+ " hundread "+ tens[n2-1]+ " "+ zeroToTwenty[n3];	
+
+		String[] zeroToTwenty = { "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten",
+				"eleven", "twelve", "thirteen", "forteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen",
+				"twenty" };
+		String[] tens = { "", "twenty", "thirty", "forty", "fifty", "sixty", "seventy", "eighty", "ninety" };
+		if (n == 0)
+			result = "zero";
+		if (n <= 20)
+			result = zeroToTwenty[n];
+		if (n < 100 && n > 20)
+			result = tens[(n / 10) - 1] + " " + zeroToTwenty[(n % 10)];
+		if (n > 100) {
+			int n1 = n / 100;
+			int temp = (n % 100);
+			if (temp < 20) {
+				result = zeroToTwenty[n1] + " hundread " + " " + zeroToTwenty[temp];
+			} else {
+				int n2 = temp / 10;
+				n2 = n2 == 0 || n2 == 1 ? ++n2 : n2;
+				int n3 = (n % 10);
+				result = zeroToTwenty[n1] + " hundread " + tens[n2 - 1] + " " + zeroToTwenty[n3];
 			}
 		}
-		
-		
+
 		return result;
 	}
-	
+
 	String longestNonrepeatingSubstring(String str) {
 		String result = "";
 		String temp = "";
-		for(int i =0; i<str.length();i++) {
+		for (int i = 0; i < str.length(); i++) {
 			char c = str.charAt(i);
-			if(temp.contains(c+"")) {
-				result = result.length()>=temp.length()?result:temp;
-				temp = ""+c;
-			}
-			else temp+=c;
+			if (temp.contains(c + "")) {
+				result = result.length() >= temp.length() ? result : temp;
+				temp = "" + c;
+			} else
+				temp += c;
 		}
-		result = result.length()>=temp.length()?result:temp;
+		result = result.length() >= temp.length() ? result : temp;
 		return result;
 	}
 
@@ -159,30 +231,29 @@ public class StringWordCount {
 		int[] val = new int[s.length];
 		int temp = 0;
 		int result = 0;
-		for(int i =0; i<s.length;i++) {
-			for(int j = 0; j<s[i].length();j++) {
-				char c =s[i].charAt(j);
-				if(Character.isDigit(c)) {
-					temp += Integer.parseInt(c+"");
+		for (int i = 0; i < s.length; i++) {
+			for (int j = 0; j < s[i].length(); j++) {
+				char c = s[i].charAt(j);
+				if (Character.isDigit(c)) {
+					temp += Integer.parseInt(c + "");
 					continue;
 				}
-				temp+=((int)c-96);	
+				temp += ((int) c - 96);
 			}
-			val[i]=temp;
-			temp=0;
+			val[i] = temp;
+			temp = 0;
 		}
-		for(int i=0; i<val.length;i++) {
-			result +=val[i];
+		for (int i = 0; i < val.length; i++) {
+			result += val[i];
 		}
 		System.out.println(result);
-		if(td.isPrime(result)) {
-		
+		if (td.isPrime(result)) {
+
 			return "prime sentence";
 		}
 		return "composite sentence";
 	}
-	
-	
+
 	String caesarCipher(String s, int k) {
 		String result = "";
 		int temp = 0;
@@ -902,7 +973,7 @@ public class StringWordCount {
 				c++;
 			}
 		}
-		return Math.min(c, len - c)/2;
+		return Math.min(c, len - c) / 2;
 	}
 
 	String kixCode(String addr) {
@@ -3590,7 +3661,10 @@ public class StringWordCount {
 //		System.out.println(swc.numToEng(26));
 //		System.out.println(swc.validColor("rgba(0,0,0,1.1)"));
 //		System.out.println(swc.reverseLegoYoda("An alien, I am. Holding me captive in Area 51, the government is."));
-		System.out.println(swc.generateWord(21));
+//		System.out.println(swc.generateWord(21));
+//		System.out.println(swc.mixedNumber("-5/4"));
+//		System.out.println(swc.validName("Herbert W. G. Wells"));
+		System.out.println(swc.correctTitle("jon SNOw, the King in THE NoRtH"));
 	}
 
 }

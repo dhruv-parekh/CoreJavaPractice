@@ -16,6 +16,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -28,6 +29,168 @@ import java.util.stream.IntStream;
 public class TriangleDots {
 	StringWordCount swc;
 	
+	boolean productOfPrimes(int num) {
+		List<Integer> list = new ArrayList<>();
+		for(int i=2; i<= num/2; i++) {
+//			if(num%i==0 && !isPrime(i)) return false;
+			if(num%i==0)list.add(i);
+		}
+		if(list.size()==0) return false;
+		if(list.size()==1 && num/list.get(0) == list.get(0)) {
+			if(!isPrime(list.get(0))) return false;
+		}
+		for(Integer n:list) {
+			if(isPrime(n) ) {
+				if(!isPrime(num/n))
+				return false;
+			}
+			else {
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	boolean validateTheRelationships(String str) {
+		String[] numbers = str.split("[>=<]");
+		String[] operands = str.split("-?[0-9]+");
+		List<Integer> list = new ArrayList<>();
+		for(int i =0;i<numbers.length;i++) {
+			if(numbers[i].length()==0) continue;
+			list.add(Integer.parseInt(numbers[i]));
+		}
+		System.out.println(list);
+		System.out.println(Arrays.toString(operands) );
+		int index = 1;
+		for(int i =1; i<operands.length;i++) {
+			if(operands[i].equals("<") && !(list.get(index-1)<list.get(i))) return false;
+			if(operands[i].equals(">") && !(list.get(index-1)>list.get(i))) return false;
+			if(operands[i].equals("=") && (list.get(index-1)!=list.get(i))) return false;
+			if(operands[i].equals("<=") && (list.get(index-1)>list.get(i))) return false;
+			if(operands[i].equals(">=") && (list.get(index-1)<list.get(i))) return false;
+			index++;
+		}
+		
+		return true;
+	}
+	
+	 int getLuckiest(int[] r) {
+		 if(r.length == 0) return 0;
+		 int result = 0;
+		 int freq = 0;
+		 for(int i =0; i<r.length;i++) {
+			 int num = r[i];
+			 String n = Integer.toString(num);
+			 int tempFreq = frequencyOf5(n);
+			 if(tempFreq > freq) {
+				 freq = tempFreq;
+				 result = num;
+			 }
+			 if(freq == tempFreq) {
+				 if(n.contains("5")) {
+					 if(num>result) result= num;	 
+				 }
+			 }
+			 
+		 }
+		 return result == 0?r[0]:result;
+	 }
+	
+	private int frequencyOf5(String n) {
+		int freq = 0;
+		for(int i =0; i<n.length();i++) {
+			if(n.charAt(i)=='5') freq++;
+		}
+		return freq;
+	}
+
+	boolean isHeteromecic(int n) {
+		if(n==0 || n==2)return true;
+		for(int i =0;i<=n/2;i++) {
+			if(i*(i+1)==n)return true;
+		}
+		return false;
+	}
+	
+	int maxProduct(int[] r) {
+		int result = 0;
+		
+		for(int i =0; i<r.length;i++) {
+			for(int j =0; j<r.length;j++) {
+				
+				for(int k =0; k<r.length;k++) {
+					int product =1;
+					if(k==i || k==j||i==j) continue;
+					product = r[k]*r[j]*r[i];
+					if(product>result) {
+//						System.out.println(r[i]+" "+r[j]+" "+r[k]);
+						result = product;
+					}
+				}
+				
+			}
+		}
+		return result;
+	}
+	int minProduct(int[] r) {
+		int result = r[0]*r[1]*r[2];
+		for(int i =0; i<r.length;i++) {
+			for(int j =0; j<r.length;j++) {
+				
+				for(int k =0; k<r.length;k++) {
+					int product =1;
+					if(k==i || k==j || i==j) continue;
+					product = r[k]*r[j]*r[i];
+					if(product<result) result = product;
+				}
+				
+			}
+		}
+		return result;
+	}
+	
+	int[] extractPrimes(int num) {
+		String n =  Integer.toString(num);
+		Set<Integer> set = new HashSet();
+		
+		for(int i =0; i<n.length(); i++) {
+			for(int j = n.length(); j>i;j--) {
+//				System.out.println(j);
+				set.add(Integer.parseInt(n.substring(i,j)));
+			}
+		}
+//		System.out.println(set);
+		Set<Integer> setPrime =  new HashSet<>();
+		for(Integer i:set) {
+			if(isPrime(i))setPrime.add(i);
+		}
+		return setPrime.stream().mapToInt(Integer::intValue).toArray();
+		
+	}
+	
+	boolean isHappyRecursion(int n) {
+		int a = 0;
+		int res = isHappySupport(n);
+		System.out.println(res);
+		return res==1;
+		
+	}
+	
+	private int isHappySupport(int n) {
+		int sum =0;
+		while(n>0) {
+//			int sum =0;
+			sum = sum+ (int)Math.pow((n%10), 2);
+			n/=10;
+		}
+//		System.out.println(sum);
+		if(sum ==1 || sum ==4) {
+			return sum;
+		}
+		return isHappySupport(sum);
+		
+	}
+
 	int split25(int num) {
 		
 		if(num >= 1 && num<5) return num;
@@ -1882,6 +2045,7 @@ public class TriangleDots {
 			n1 = n2;
 			n2 = temp;
 		}
+//		System.out.println(n2);
 		return n2;
 
 	}
@@ -2187,6 +2351,7 @@ public class TriangleDots {
 	}
 
 	boolean isPrime(int num) {
+		if(num ==0) return false;
 		if (num == 1)
 			return false;
 		for (int i = 2; i < num; i++)
@@ -2640,7 +2805,15 @@ public class TriangleDots {
 //		System.out.println(td.isbn13("0316066524"));
 //		System.out.println(td.takeDownAveragBy5(new String[] {"53%", "79%"}));
 //		System.out.println(td.isLeapYear(2016));
-		System.out.println(td.split25(20));
+//		System.out.println(td.split25(20));
+//		System.out.println(td.isHappyRecursion(8888));
+//		System.out.println(Arrays.toString(td.extractPrimes(10234)));
+//		System.out.println(td.maxProduct(new int[] {-8, 1, 2, 7, 9}));
+//		System.out.println(td.minProduct(new int[] {-5, -3, -1, 0, 4}));
+//		System.out.println(td.isHeteromecic(156));
+//		System.out.println(td.getLuckiest(new int[] {515, 1255, -55,  1}));
+//		System.out.println(td.validateTheRelationships("3<19>-19>5>=-19"));
+		System.out.println(td.productOfPrimes(2059));
 	}
 
 }
