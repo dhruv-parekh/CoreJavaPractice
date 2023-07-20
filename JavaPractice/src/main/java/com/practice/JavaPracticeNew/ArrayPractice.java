@@ -24,6 +24,43 @@ import com.practice.classes.Chapter;
 
 public class ArrayPractice {
 	
+	Object[] getItemsAt(Object[] arr, String par) {
+		
+		List<Object> list =  Arrays.asList(arr);
+		Collections.reverse(list);
+		List<Object> result = new ArrayList<>();
+		for(int i =0; i<list.size(); i++) {
+			if(par.equalsIgnoreCase("odd") && i%2==0) result.add(list.get(i));
+			if(par.equalsIgnoreCase("even") && i%2!=0) result.add(list.get(i));
+		}
+		Collections.reverse(result);
+		return result.toArray();
+	}
+	
+	char[] finalResult(char[] letters) {
+		String str = new String(letters);
+		
+		String temp =str;
+		do {
+			str = temp;
+			temp = temp.replaceFirst("(\\w)\\1+", "");
+		}
+		while(temp!=str);
+	 return str.toCharArray();
+		
+	}
+	
+	String[] getHashTags(String str) {
+		List<String> list =  Arrays.asList(str.toLowerCase().replaceAll("[^a-z\\s]", "").split(" "));
+		list.sort((s1,s2)->s2.length()-s1.length());
+		System.out.println(list);
+		String[] result = list.size()<3? new String[list.size()]:new String[3];
+		for(int i =0; i<result.length; i++) {
+			result[i]="#"+list.get(i);
+		}
+		return result;
+	}
+	
 	
 	boolean cannotCapture(int[][] b) {
 
@@ -1857,8 +1894,10 @@ public class ArrayPractice {
 //		System.out.println(Arrays.toString(ap.numSplit(121317)));'
 //		System.out.println(Arrays.toString(ap.flatten(new Object[][] {
 //			{new Object[] {17.2, 500, "code"}, "generate"}})));
-		System.out.println(ap.cannotCapture(new int[][] {{1, 0, 1, 0, 1, 0, 1, 0}, {0, 1, 0, 1, 0, 1, 0, 1}, {0, 0, 0, 0, 1, 0, 1, 0}, {0, 0, 0, 0, 0, 0, 0, 1}, {1, 0, 0, 0, 1, 0, 1, 0}, {0, 0, 0, 0, 0, 1, 0, 1}, {1, 0, 0, 0, 1, 0, 1, 0}, {0, 0, 1, 1, 0, 1, 0, 1}}));
-		
+//		System.out.println(ap.cannotCapture(new int[][] {{1, 0, 1, 0, 1, 0, 1, 0}, {0, 1, 0, 1, 0, 1, 0, 1}, {0, 0, 0, 0, 1, 0, 1, 0}, {0, 0, 0, 0, 0, 0, 0, 1}, {1, 0, 0, 0, 1, 0, 1, 0}, {0, 0, 0, 0, 0, 1, 0, 1}, {1, 0, 0, 0, 1, 0, 1, 0}, {0, 0, 1, 1, 0, 1, 0, 1}}));
+//		System.out.println(Arrays.toString(ap.getHashTags("Are You an Elite Entrepreneur?")));
+//		System.out.println(Arrays.toString(ap.finalResult(new char[] {'C', 'A', 'C'})));
+		System.out.println(Arrays.toString(ap.getItemsAt(new Object[] {"A", "R", "B", "I", "T", "R", "A", "R", "I", "L", "Y"},"even")));
 		
 	}
 

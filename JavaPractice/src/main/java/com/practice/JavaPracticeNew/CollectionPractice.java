@@ -24,6 +24,26 @@ import java.util.stream.IntStream;
 
 public class CollectionPractice {
 	
+	String[] collect(String s, int n) {
+		List<String> list = new ArrayList<>();
+		
+		list = collectSupport(s,list, n);
+		Collections.sort(list);
+		
+		return list.toArray(new String[list.size()]);
+		
+	}
+	
+	private List<String> collectSupport(String s, List<String> list, int n) {
+		if(s.length()>n) {
+			list.add(s.substring(0,n));
+			list = collectSupport(s.substring(n), list, n);
+			return list;
+		}
+		list.add(s);
+		return list;
+	}
+
 	int singleNumber(int[] n) {
 		
 		List<Integer> list = Arrays.stream(n).boxed().toList();
@@ -629,7 +649,8 @@ public class CollectionPractice {
 //		System.out.println(cp.shuffleCount(14));
 //		System.out.println(cp.oddOneOut(new String[] {"very", "to", "then", "some","me","he"}));
 //		System.out.println(cp.bonacci(5, 10));
-		System.out.println(cp.singleNumber(new int[] {-1, 2, -4, 20, -1, 2, -4, -4, 2, -1}));
+//		System.out.println(cp.singleNumber(new int[] {-1, 2, -4, 20, -1, 2, -4, -4, 2, -1}));
+		System.out.println(Arrays.toString(cp.collect("pneumonoultramicroscopicsilicovolcanoconiosis", 22)));
 
 	}
 

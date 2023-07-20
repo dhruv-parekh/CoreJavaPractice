@@ -8,9 +8,11 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 import java.util.Stack;
 import java.util.TreeMap;
@@ -21,6 +23,62 @@ import java.util.regex.Pattern;
 import javax.xml.stream.events.Characters;
 
 public class StringWordCount {
+	
+	
+	//https://edabit.com?a=1&b=2&a=2
+	String stripUrlParams(String url) {
+		
+		String[] str = url.split("\\?");
+		if(str.length==1) return str[0];
+		
+		Map<String, String> map =  new HashMap<>();
+		String[] strAfter = str[1].split("&");
+		for(int i =0;i<strAfter.length;i++) {
+			map.put(strAfter[i].substring(0,1), strAfter[i].substring(2));
+		}
+		
+		String res = "";
+		for(var entry : map.entrySet()) {
+			res = res + entry.getKey()+"="+entry.getValue()+"&";
+		}
+		
+		return str[0]+"?"+res.substring(0,res.length()-1);
+	}
+	
+	long repeatedString(String s, long n) {
+		if(n<s.length()) return s.substring(0, (int)n).replaceAll("[^a]", "").length();
+		long tLen = s.length();
+		long len = s.replaceAll("[^a]", "").length();
+		System.out.println(len+" "+tLen);
+		long numRepratedS =  (long) n/tLen;
+		
+		if(numRepratedS*tLen != n ) {
+			long rem = n-(numRepratedS*tLen);
+			int val = s.substring(0,(int)rem).replaceAll("[^a]", "").length();
+			return numRepratedS*len + val;
+		}
+		
+		System.out.println(numRepratedS);
+		return numRepratedS*len;
+	}
+	
+	boolean isZygodrome(long num) {
+		String n = Long.toString(num);
+		if(n.length()<2) return false;
+		for(int i =0; i<n.length();i++) {
+			if(i == 0) {
+				if(n.charAt(i)!=n.charAt(i+1))return false;
+				continue;
+			}
+			if(i == n.length()-1) {
+				System.out.println("here");
+				 if(n.charAt(i)!=n.charAt(i-1))	return false;
+				 continue;
+			}
+			if(n.charAt(i)!=n.charAt(i-1) && n.charAt(i)!=n.charAt(i+1)) return false;
+		}
+		return true;
+	}
 
 	String correctTitle(String str) {
 		String result = "";
@@ -3664,7 +3722,10 @@ public class StringWordCount {
 //		System.out.println(swc.generateWord(21));
 //		System.out.println(swc.mixedNumber("-5/4"));
 //		System.out.println(swc.validName("Herbert W. G. Wells"));
-		System.out.println(swc.correctTitle("jon SNOw, the King in THE NoRtH"));
+//		System.out.println(swc.correctTitle("jon SNOw, the King in THE NoRtH"));
+//		System.out.println(swc.isZygodrome(0));
+//		System.out.println(swc.repeatedString("aab",882787));
+		System.out.println(swc.stripUrlParams("https://edabit.com?a=1&b=2&c=3&d=4&c=5"));
 	}
 
 }

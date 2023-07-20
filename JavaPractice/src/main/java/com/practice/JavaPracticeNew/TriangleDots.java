@@ -29,6 +29,75 @@ import java.util.stream.IntStream;
 public class TriangleDots {
 	StringWordCount swc;
 	
+	
+	
+	int kaprekar(int num) {
+		
+		String n = Integer.toString(num);
+		
+		if(n.length()<4) {
+			n = addZeros(n);
+		}
+		
+		int counter = 0;
+		while(!n.equals("6174")) {
+			int a  = arrangeAsc(n);
+			int b  = arrangeDesc(n);
+			System.out.println("a: "+a+" b: "+b);
+			num = a>b?a-b:b-a;
+			n = Integer.toString(num);
+			if(n.length()<4) {
+				n = addZeros(n);
+			}
+			System.out.println("n: "+n);
+			counter++;
+		}
+		
+		return counter;
+	}
+	
+	private int arrangeDesc(String n) {
+		String[] res = new String[4];
+		for(int i = 0; i <n.length();i++) {
+//			res[i] = Integer.parseInt(n.charAt(i)+"");
+			res[i] = n.charAt(i)+"";
+		}
+		Arrays.sort(res,Collections.reverseOrder());
+		String result = String.join("", res);
+		return Integer.parseInt(result);
+	}
+
+	private int arrangeAsc(String n) {
+		String[] res = new String[4];
+		for(int i = 0; i <n.length();i++) {
+//			res[i] = Integer.parseInt(n.charAt(i)+"");
+			res[i] = n.charAt(i)+"";
+		}
+		Arrays.sort(res);
+		String result = String.join("", res);
+		return Integer.parseInt(result);
+	}
+
+	String addZeros(String n) {
+		int c = 4-n.length();
+		return "0".repeat(c)+n;
+	}
+	
+	boolean isDisarium(int n) {
+		
+		int sum = 0;
+		int len = Integer.toString(n).length();
+		int temp = n;
+		while(n>0) {
+			sum = (int) (sum + Math.pow(n%10, len));
+			n = n/10;
+			len--;
+		}
+		System.out.println(sum);
+		if(sum!=temp) return false;
+		return true;
+	}
+	
 	boolean productOfPrimes(int num) {
 		List<Integer> list = new ArrayList<>();
 		for(int i=2; i<= num/2; i++) {
@@ -2813,7 +2882,9 @@ public class TriangleDots {
 //		System.out.println(td.isHeteromecic(156));
 //		System.out.println(td.getLuckiest(new int[] {515, 1255, -55,  1}));
 //		System.out.println(td.validateTheRelationships("3<19>-19>5>=-19"));
-		System.out.println(td.productOfPrimes(2059));
+//		System.out.println(td.productOfPrimes(2059));
+//		System.out.println(td.isDisarium(598));
+		System.out.println(td.kaprekar(101));
 	}
 
 }
