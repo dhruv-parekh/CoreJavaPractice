@@ -30,7 +30,45 @@ public class TriangleDots {
 	StringWordCount swc;
 	
 	
+	int superDigit(String n, int k) {
+		String num = n.repeat(k);
+		return (int)superDigitSupport(num);
+		
+	}
 	
+	private long superDigitSupport(String num) {
+		
+		if(num.length()==1) return Integer.parseInt(num);
+		
+		Long l = Long.parseLong(num);
+		long sum = 0;
+		while(l>0) {
+			sum = sum+ l%10;
+			l = l/10;
+		}
+		return superDigitSupport(Long.toString(sum));
+	}
+
+	int whoGoesFree(int n, int k) {
+		List<Integer> list =  new ArrayList<>();
+		int index = 0;
+		for(int i =0; i<n;i++) {
+			list.add(i);
+		}
+		return whoGoesFreeRecur(list,index, k);
+	}
+	
+	
+	private int whoGoesFreeRecur(List<Integer> list, int index, int k) {
+		System.out.println(list);
+		if(list.size()==1) return list.get(0);
+		
+		index = ((index-1) +k)%list.size();
+		list.remove(index);
+		return whoGoesFreeRecur(list, index, k);
+	}
+
+
 	int kaprekar(int num) {
 		
 		String n = Integer.toString(num);
@@ -2884,7 +2922,9 @@ public class TriangleDots {
 //		System.out.println(td.validateTheRelationships("3<19>-19>5>=-19"));
 //		System.out.println(td.productOfPrimes(2059));
 //		System.out.println(td.isDisarium(598));
-		System.out.println(td.kaprekar(101));
+//		System.out.println(td.kaprekar(101));
+//		System.out.println(td.whoGoesFree(7, 3));
+		System.out.println(td.superDigit("9875", 4));
 	}
 
 }

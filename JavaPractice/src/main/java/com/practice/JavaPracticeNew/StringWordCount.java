@@ -24,6 +24,130 @@ import javax.xml.stream.events.Characters;
 
 public class StringWordCount {
 	
+	String encryption(String s1) {
+		String s = s1.replaceAll(" ", "");
+		int len = s.length();
+		System.out.println(len);
+		int r = 0;
+		int c=0;
+		int t = 0;
+		for(int i =1; i<len/2;i++) {
+			t = (int)(len/(Math.pow(i, 2)));
+			if(t<=0) {
+				t = i;
+				break;
+			}
+		}
+		
+		if(Math.pow(t, 2) > len) {
+			c= t;
+			r=t-1;
+		}
+		else {
+			c=t;
+			r=t;
+		}
+		if(c*r<len) {
+			c=t;
+			r=t;
+		}
+		System.out.println(" c:"+c+" r="+r);
+		List<String> list = new ArrayList<>();
+		
+		int index = 0;
+		for(int i =0; i<r;i++) {
+			String res = "";
+			for(int j = 0;j<c; j++) {
+				
+				if((i==r-1)) {
+					if(index==(len-1)) {
+						int temp = c-res.length();
+						res = res+ s.charAt(index) +" ".repeat(temp);
+						break;	
+					}
+					
+				}
+				System.out.println("index: "+index+" i:"+i+" j="+j);
+				res = res+s.charAt(index);
+				index++;
+			}
+			list.add(res);
+		}
+		System.out.println("list:"+list);
+		
+		String result = "";
+		for(int j = 0; j<list.get(0).length(); j++) {
+			for(int i =0; i<list.size();i++) {
+				if(list.get(i).charAt(j)==' ') continue;
+				result = result +list.get(i).charAt(j);
+			}
+			result = result +" ";
+		}
+		return result.trim();
+	}
+	
+	String pilish_string(String s) {
+		String result = "";
+		String str = s;
+		String pi = "314159265358979";
+		int index = 0;
+		int i =0;
+		while(str.length()>0) {
+			
+			int temp = Integer.parseInt(pi.charAt(index)+"");
+			if(index==pi.length()-1) break;
+			if(temp < str.length()) {
+				result  = result + " "+ str.substring(0,temp);
+				str = str.substring(temp);
+				index++;
+				i=i+temp;
+//				System.out.println(result);
+				continue;
+			}
+			int diff = temp-str.length();
+			String t = str+str.substring(str.length()-1).repeat(diff);
+			result = result + " "+t;
+			break;
+		}
+		return result.trim();
+	}
+	
+	boolean ascending(String str) {
+		String s = str;
+		int counter = 0;
+		for(int i =0; (i+3)<str.length(); i=i+3) {
+			String temp =s.substring(i,i+3);
+			int a = Integer.parseInt(temp.charAt(0)+"");
+			int b = Integer.parseInt(temp.charAt(1)+"");
+			int c = Integer.parseInt(temp.charAt(2)+"");
+			if((a<b && b<c) || (a==b && b==c)) continue;
+			else {
+				counter++;
+				break;
+			}
+			
+		}
+		if(counter!=0 && str.length()!=0) return false;
+		if(counter != 0) {
+			for(int i =0; (i+2)<str.length(); i=i+2) {
+				String temp =s.substring(i,i+2);
+				int a = Integer.parseInt(temp.charAt(0)+"");
+				int b = Integer.parseInt(temp.charAt(1)+"");
+				if(a==b || a<b) {
+					s = temp;
+					continue;
+				}
+				else {
+					counter++;
+					break;
+				}
+			}
+			counter--;
+		}
+		
+		return counter==0;
+	}
+	
 	
 	//https://edabit.com?a=1&b=2&a=2
 	String stripUrlParams(String url) {
@@ -3725,7 +3849,10 @@ public class StringWordCount {
 //		System.out.println(swc.correctTitle("jon SNOw, the King in THE NoRtH"));
 //		System.out.println(swc.isZygodrome(0));
 //		System.out.println(swc.repeatedString("aab",882787));
-		System.out.println(swc.stripUrlParams("https://edabit.com?a=1&b=2&c=3&d=4&c=5"));
+//		System.out.println(swc.stripUrlParams("https://edabit.com?a=1&b=2&c=3&d=4&c=5"));
+//		System.out.println(swc.ascending("666667"));
+//		System.out.println(swc.pilish_string("33314444155555999999999226666665555533355555888888889999999997777777999999999"));
+		System.out.println(swc.encryption("One should not worry over things that have already happened and that cannot be changed."));
 	}
 
 }
