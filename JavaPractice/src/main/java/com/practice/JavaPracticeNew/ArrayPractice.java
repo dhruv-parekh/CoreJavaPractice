@@ -18,11 +18,91 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.TreeSet;
 
 import com.practice.classes.Chapter;
 
 public class ArrayPractice {
+	
+	int[][] sumsUp(int[] n) {
+		
+		Set<int[]> set = new HashSet<>();
+		List<Integer> list = new ArrayList<>();
+		for(int i =0; i<n.length;i++) {
+			int[] arr = new int[2];
+			for(int j =0; j<n.length;j++) {
+				if(i==j)continue;
+				if(list.contains(j))continue;
+				if(n[i]+n[j] == 8) {
+					arr[0] = n[i];
+					arr[1] = n[j];
+					list.add(i);
+					list.add(j);
+					Arrays.sort(arr);
+					set.add(arr);
+				}
+				
+			}
+		}
+		int[][] result =  new int[set.size()][2];
+		int i =0;
+		for(int[] a:set) {
+			result[i]=a;
+			i++;
+		}
+		return result;
+		
+	}
+	
+	String[] join(String[] letters) {
+		
+		String result = letters[0];
+		int min = 10;
+		
+		for(int i =0; i<letters.length-1;i++) {
+			int len = letters[i].length();
+			int temp = len - letters[i].lastIndexOf(letters[i+1].charAt(0));
+			temp = temp>=len?0:temp;
+			min = min<=temp?min:temp;
+			result = result + letters[i+1].substring(temp);
+		}
+		return new String[] {result,Integer.toString(min)};
+	}
+	
+	String[] bucketize(String phrase, int n) {
+		String[] str = phrase.split(" ");
+		
+		String temp="";
+//		String res = "";
+		List<String> list = new ArrayList<>();
+		for(int i =0; i<str.length;i++) {
+			if(str[i].length()>n) continue;
+			temp = temp +" "+ str[i];
+			temp = temp.trim();
+			if((temp.length())<n) {
+				System.out.println(i+" i " + temp);
+				if(i == str.length-1) list.add(temp);
+				continue;
+			}
+			if((temp.length())==n){
+				System.out.println(i+" equal i " + temp);
+				list.add(temp.trim());
+				temp="";
+				continue;
+			}
+			if((temp.length())>n){
+				System.out.println(i+" greater i " + temp);
+				list.add(temp.substring(0,temp.length()-str[i].length()).trim());
+				temp=str[i];
+				if(i == str.length-1) list.add(temp);
+			}
+		}
+		System.out.println(list);
+		
+		return list.toArray(new String[list.size()]);
+		
+	}
 	
 	Object[] getItemsAt(Object[] arr, String par) {
 		
@@ -1897,8 +1977,10 @@ public class ArrayPractice {
 //		System.out.println(ap.cannotCapture(new int[][] {{1, 0, 1, 0, 1, 0, 1, 0}, {0, 1, 0, 1, 0, 1, 0, 1}, {0, 0, 0, 0, 1, 0, 1, 0}, {0, 0, 0, 0, 0, 0, 0, 1}, {1, 0, 0, 0, 1, 0, 1, 0}, {0, 0, 0, 0, 0, 1, 0, 1}, {1, 0, 0, 0, 1, 0, 1, 0}, {0, 0, 1, 1, 0, 1, 0, 1}}));
 //		System.out.println(Arrays.toString(ap.getHashTags("Are You an Elite Entrepreneur?")));
 //		System.out.println(Arrays.toString(ap.finalResult(new char[] {'C', 'A', 'C'})));
-		System.out.println(Arrays.toString(ap.getItemsAt(new Object[] {"A", "R", "B", "I", "T", "R", "A", "R", "I", "L", "Y"},"even")));
-		
+//		System.out.println(Arrays.toString(ap.getItemsAt(new Object[] {"A", "R", "B", "I", "T", "R", "A", "R", "I", "L", "Y"},"even")));
+//		System.out.println(Arrays.toString(ap.bucketize("she sells sea shells by the sea", 10)));
+//		System.out.println(Arrays.toString(ap.join(new String[]{"move", "over", "very"})));
+		System.out.println(Arrays.deepToString(ap.sumsUp(new int[] {5, 7, 2, 3, 0, 1, 6, 4, 8})));
 	}
 
 }

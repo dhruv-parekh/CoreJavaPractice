@@ -108,10 +108,14 @@ public class FunctionalPrograming<R> {
 	public static void main(String[] args) {
 		
 		FunctionalPrograming  fp = new FunctionalPrograming();
-		
+//		FunctionalProgrmingTest fp1 =()->System.out.println("I ran via lamda exp");
+		FunctionalProgrmingTest fp1 =x -> {return x*x;};
 //		fp.printList(List.of(11,20,30,15, 4));
 		String[] arr = {"Montana", "FL"};
 		int[] arr1 = {1, 2, 3, 4, 5, 6, 7, 8};
+		
+//		fp1.work();
+		System.out.println(fp1.raisedToX(25));
 		
 //		System.out.println(fp.trianguilarNum(15));
 		
@@ -121,8 +125,13 @@ public class FunctionalPrograming<R> {
 //		System.out.println(fp.move("welcome"));
 //		fp.printStringList(List.of("ab","spring1","lovespring", "happy", "dhruv spring"));
 //		System.out.println(Arrays.toString(fp.jazzify(arr)));
-		System.out.println(Arrays.toString(fp.dictionary("cre", new String[] {"creating", "creature", "creed", "increasing"})));
+//		System.out.println(Arrays.toString(fp.dictionary("cre", new String[] {"creating", "creature", "creed", "increasing"})));
 		
+	}
+	
+	interface FunctionalProgrmingTest{
+//		void work();
+		int raisedToX(int x);
 	}
 
 	

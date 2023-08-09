@@ -24,6 +24,15 @@ import java.util.stream.IntStream;
 
 public class CollectionPractice {
 	
+	String listToString(List<String> list) {
+		
+		String result= "";
+		
+		result = String.join(",", list);
+		
+		return result;
+	}
+	
 	String[] collect(String s, int n) {
 		List<String> list = new ArrayList<>();
 		
@@ -650,7 +659,12 @@ public class CollectionPractice {
 //		System.out.println(cp.oddOneOut(new String[] {"very", "to", "then", "some","me","he"}));
 //		System.out.println(cp.bonacci(5, 10));
 //		System.out.println(cp.singleNumber(new int[] {-1, 2, -4, 20, -1, 2, -4, -4, 2, -1}));
-		System.out.println(Arrays.toString(cp.collect("pneumonoultramicroscopicsilicovolcanoconiosis", 22)));
+//		System.out.println(Arrays.toString(cp.collect("pneumonoultramicroscopicsilicovolcanoconiosis", 22)));
+		List<String> list = new ArrayList<>();
+		list.add("dhruv");
+		list.add("you");
+		list.add("rock");
+		System.out.println(cp.listToString(list));
 
 	}
 

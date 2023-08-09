@@ -29,87 +29,164 @@ import java.util.stream.IntStream;
 public class TriangleDots {
 	StringWordCount swc;
 	
-	
-	int superDigit(String n, int k) {
-		String num = n.repeat(k);
-		return (int)superDigitSupport(num);
+	double weighOnMars(double weight) {
+		
+		return new BigDecimal((weight*3.73)/9.81).setScale(2, RoundingMode.HALF_EVEN).doubleValue();
 		
 	}
-	
+
+	String multiplyBy11WithTwist(String n) {
+
+		String rev = new StringBuilder(n).reverse().toString();
+		String result = rev.charAt(0) + "";
+		int a = 0;
+		int sum = 0;
+		int r = 0;
+		for (int i = 0; i < rev.length(); i++) {
+
+			if (i == rev.length() - 1) {
+				String temp = Integer.toString(Integer.parseInt(rev.charAt(rev.length() - 1) + "") + a);
+				result = result + new StringBuilder(temp).reverse().toString();
+				break;
+			}
+			sum = Integer.parseInt(rev.charAt(i) + "") + Integer.parseInt(rev.charAt(i + 1) + "") + a;
+
+			a = sum / 10;
+			r = sum % 10;
+//			System.out.println(sum+" "+r);
+			result = result + r;
+		}
+
+		return new StringBuilder(result).reverse().toString();
+	}
+
+	boolean cFuge(int n, int k) {
+		return (k != 1 && n != 1) && (n == k || (n % 2 == 0 && k % 2 == 1) || n % (n - k) == 0);
+	}
+
+	boolean ascending(String str) {
+		int len = str.length();
+		int wordLen = 1;
+		while (wordLen * 2 <= len) {
+			int index = 0;
+			int num = Integer.parseInt(str.substring(index, index + wordLen));
+			while (index + 2 * wordLen <= len) {
+				int nextNum = Integer.parseInt(str.substring(index + wordLen, index + 2 * wordLen));
+				if (nextNum - num != 1) {
+					index = len;
+				} else if (index + 2 * wordLen == len) {
+					return true;
+				}
+				num = nextNum;
+				index = index + wordLen;
+			}
+			wordLen++;
+		}
+		return false;
+	}
+
+	boolean palindromeDescendant(int num) {
+		String n = Integer.toString(num);
+		if (n.length() % 2 != 0)
+			return false;
+		boolean flag = palindromeDescendantSupport(n);
+		return flag;
+	}
+
+	boolean palindromeDescendantSupport(String n) {
+		swc = new StringWordCount();
+		if (n.length() % 2 != 0 || n.length() == 1)
+			return false;
+		if (swc.isPalindrome(n))
+			return true;
+		String num = "";
+		for (int i = 0; i < n.length(); i = i + 2) {
+			int sum = Integer.parseInt(n.charAt(i) + "") + Integer.parseInt(n.charAt(i + 1) + "");
+			num = num + Integer.toString(sum);
+		}
+		return palindromeDescendantSupport(num);
+	}
+
+	int superDigit(String n, int k) {
+		String num = n.repeat(k);
+		return (int) superDigitSupport(num);
+
+	}
+
 	private long superDigitSupport(String num) {
-		
-		if(num.length()==1) return Integer.parseInt(num);
-		
+
+		if (num.length() == 1)
+			return Integer.parseInt(num);
+
 		Long l = Long.parseLong(num);
 		long sum = 0;
-		while(l>0) {
-			sum = sum+ l%10;
-			l = l/10;
+		while (l > 0) {
+			sum = sum + l % 10;
+			l = l / 10;
 		}
 		return superDigitSupport(Long.toString(sum));
 	}
 
 	int whoGoesFree(int n, int k) {
-		List<Integer> list =  new ArrayList<>();
+		List<Integer> list = new ArrayList<>();
 		int index = 0;
-		for(int i =0; i<n;i++) {
+		for (int i = 0; i < n; i++) {
 			list.add(i);
 		}
-		return whoGoesFreeRecur(list,index, k);
+		return whoGoesFreeRecur(list, index, k);
 	}
-	
-	
+
 	private int whoGoesFreeRecur(List<Integer> list, int index, int k) {
 		System.out.println(list);
-		if(list.size()==1) return list.get(0);
-		
-		index = ((index-1) +k)%list.size();
+		if (list.size() == 1)
+			return list.get(0);
+
+		index = ((index - 1) + k) % list.size();
 		list.remove(index);
 		return whoGoesFreeRecur(list, index, k);
 	}
 
-
 	int kaprekar(int num) {
-		
+
 		String n = Integer.toString(num);
-		
-		if(n.length()<4) {
+
+		if (n.length() < 4) {
 			n = addZeros(n);
 		}
-		
+
 		int counter = 0;
-		while(!n.equals("6174")) {
-			int a  = arrangeAsc(n);
-			int b  = arrangeDesc(n);
-			System.out.println("a: "+a+" b: "+b);
-			num = a>b?a-b:b-a;
+		while (!n.equals("6174")) {
+			int a = arrangeAsc(n);
+			int b = arrangeDesc(n);
+			System.out.println("a: " + a + " b: " + b);
+			num = a > b ? a - b : b - a;
 			n = Integer.toString(num);
-			if(n.length()<4) {
+			if (n.length() < 4) {
 				n = addZeros(n);
 			}
-			System.out.println("n: "+n);
+			System.out.println("n: " + n);
 			counter++;
 		}
-		
+
 		return counter;
 	}
-	
+
 	private int arrangeDesc(String n) {
 		String[] res = new String[4];
-		for(int i = 0; i <n.length();i++) {
+		for (int i = 0; i < n.length(); i++) {
 //			res[i] = Integer.parseInt(n.charAt(i)+"");
-			res[i] = n.charAt(i)+"";
+			res[i] = n.charAt(i) + "";
 		}
-		Arrays.sort(res,Collections.reverseOrder());
+		Arrays.sort(res, Collections.reverseOrder());
 		String result = String.join("", res);
 		return Integer.parseInt(result);
 	}
 
 	private int arrangeAsc(String n) {
 		String[] res = new String[4];
-		for(int i = 0; i <n.length();i++) {
+		for (int i = 0; i < n.length(); i++) {
 //			res[i] = Integer.parseInt(n.charAt(i)+"");
-			res[i] = n.charAt(i)+"";
+			res[i] = n.charAt(i) + "";
 		}
 		Arrays.sort(res);
 		String result = String.join("", res);
@@ -117,207 +194,228 @@ public class TriangleDots {
 	}
 
 	String addZeros(String n) {
-		int c = 4-n.length();
-		return "0".repeat(c)+n;
+		int c = 4 - n.length();
+		return "0".repeat(c) + n;
 	}
-	
+
 	boolean isDisarium(int n) {
-		
+
 		int sum = 0;
 		int len = Integer.toString(n).length();
 		int temp = n;
-		while(n>0) {
-			sum = (int) (sum + Math.pow(n%10, len));
-			n = n/10;
+		while (n > 0) {
+			sum = (int) (sum + Math.pow(n % 10, len));
+			n = n / 10;
 			len--;
 		}
 		System.out.println(sum);
-		if(sum!=temp) return false;
+		if (sum != temp)
+			return false;
 		return true;
 	}
-	
+
 	boolean productOfPrimes(int num) {
 		List<Integer> list = new ArrayList<>();
-		for(int i=2; i<= num/2; i++) {
+		for (int i = 2; i <= num / 2; i++) {
 //			if(num%i==0 && !isPrime(i)) return false;
-			if(num%i==0)list.add(i);
+			if (num % i == 0)
+				list.add(i);
 		}
-		if(list.size()==0) return false;
-		if(list.size()==1 && num/list.get(0) == list.get(0)) {
-			if(!isPrime(list.get(0))) return false;
-		}
-		for(Integer n:list) {
-			if(isPrime(n) ) {
-				if(!isPrime(num/n))
+		if (list.size() == 0)
+			return false;
+		if (list.size() == 1 && num / list.get(0) == list.get(0)) {
+			if (!isPrime(list.get(0)))
 				return false;
-			}
-			else {
+		}
+		for (Integer n : list) {
+			if (isPrime(n)) {
+				if (!isPrime(num / n))
+					return false;
+			} else {
 				return false;
 			}
 		}
 		return true;
 	}
-	
+
 	boolean validateTheRelationships(String str) {
 		String[] numbers = str.split("[>=<]");
 		String[] operands = str.split("-?[0-9]+");
 		List<Integer> list = new ArrayList<>();
-		for(int i =0;i<numbers.length;i++) {
-			if(numbers[i].length()==0) continue;
+		for (int i = 0; i < numbers.length; i++) {
+			if (numbers[i].length() == 0)
+				continue;
 			list.add(Integer.parseInt(numbers[i]));
 		}
 		System.out.println(list);
-		System.out.println(Arrays.toString(operands) );
+		System.out.println(Arrays.toString(operands));
 		int index = 1;
-		for(int i =1; i<operands.length;i++) {
-			if(operands[i].equals("<") && !(list.get(index-1)<list.get(i))) return false;
-			if(operands[i].equals(">") && !(list.get(index-1)>list.get(i))) return false;
-			if(operands[i].equals("=") && (list.get(index-1)!=list.get(i))) return false;
-			if(operands[i].equals("<=") && (list.get(index-1)>list.get(i))) return false;
-			if(operands[i].equals(">=") && (list.get(index-1)<list.get(i))) return false;
+		for (int i = 1; i < operands.length; i++) {
+			if (operands[i].equals("<") && !(list.get(index - 1) < list.get(i)))
+				return false;
+			if (operands[i].equals(">") && !(list.get(index - 1) > list.get(i)))
+				return false;
+			if (operands[i].equals("=") && (list.get(index - 1) != list.get(i)))
+				return false;
+			if (operands[i].equals("<=") && (list.get(index - 1) > list.get(i)))
+				return false;
+			if (operands[i].equals(">=") && (list.get(index - 1) < list.get(i)))
+				return false;
 			index++;
 		}
-		
+
 		return true;
 	}
-	
-	 int getLuckiest(int[] r) {
-		 if(r.length == 0) return 0;
-		 int result = 0;
-		 int freq = 0;
-		 for(int i =0; i<r.length;i++) {
-			 int num = r[i];
-			 String n = Integer.toString(num);
-			 int tempFreq = frequencyOf5(n);
-			 if(tempFreq > freq) {
-				 freq = tempFreq;
-				 result = num;
-			 }
-			 if(freq == tempFreq) {
-				 if(n.contains("5")) {
-					 if(num>result) result= num;	 
-				 }
-			 }
-			 
-		 }
-		 return result == 0?r[0]:result;
-	 }
-	
+
+	int getLuckiest(int[] r) {
+		if (r.length == 0)
+			return 0;
+		int result = 0;
+		int freq = 0;
+		for (int i = 0; i < r.length; i++) {
+			int num = r[i];
+			String n = Integer.toString(num);
+			int tempFreq = frequencyOf5(n);
+			if (tempFreq > freq) {
+				freq = tempFreq;
+				result = num;
+			}
+			if (freq == tempFreq) {
+				if (n.contains("5")) {
+					if (num > result)
+						result = num;
+				}
+			}
+
+		}
+		return result == 0 ? r[0] : result;
+	}
+
 	private int frequencyOf5(String n) {
 		int freq = 0;
-		for(int i =0; i<n.length();i++) {
-			if(n.charAt(i)=='5') freq++;
+		for (int i = 0; i < n.length(); i++) {
+			if (n.charAt(i) == '5')
+				freq++;
 		}
 		return freq;
 	}
 
 	boolean isHeteromecic(int n) {
-		if(n==0 || n==2)return true;
-		for(int i =0;i<=n/2;i++) {
-			if(i*(i+1)==n)return true;
+		if (n == 0 || n == 2)
+			return true;
+		for (int i = 0; i <= n / 2; i++) {
+			if (i * (i + 1) == n)
+				return true;
 		}
 		return false;
 	}
-	
+
 	int maxProduct(int[] r) {
 		int result = 0;
-		
-		for(int i =0; i<r.length;i++) {
-			for(int j =0; j<r.length;j++) {
-				
-				for(int k =0; k<r.length;k++) {
-					int product =1;
-					if(k==i || k==j||i==j) continue;
-					product = r[k]*r[j]*r[i];
-					if(product>result) {
+
+		for (int i = 0; i < r.length; i++) {
+			for (int j = 0; j < r.length; j++) {
+
+				for (int k = 0; k < r.length; k++) {
+					int product = 1;
+					if (k == i || k == j || i == j)
+						continue;
+					product = r[k] * r[j] * r[i];
+					if (product > result) {
 //						System.out.println(r[i]+" "+r[j]+" "+r[k]);
 						result = product;
 					}
 				}
-				
+
 			}
 		}
 		return result;
 	}
+
 	int minProduct(int[] r) {
-		int result = r[0]*r[1]*r[2];
-		for(int i =0; i<r.length;i++) {
-			for(int j =0; j<r.length;j++) {
-				
-				for(int k =0; k<r.length;k++) {
-					int product =1;
-					if(k==i || k==j || i==j) continue;
-					product = r[k]*r[j]*r[i];
-					if(product<result) result = product;
+		int result = r[0] * r[1] * r[2];
+		for (int i = 0; i < r.length; i++) {
+			for (int j = 0; j < r.length; j++) {
+
+				for (int k = 0; k < r.length; k++) {
+					int product = 1;
+					if (k == i || k == j || i == j)
+						continue;
+					product = r[k] * r[j] * r[i];
+					if (product < result)
+						result = product;
 				}
-				
+
 			}
 		}
 		return result;
 	}
-	
+
 	int[] extractPrimes(int num) {
-		String n =  Integer.toString(num);
+		String n = Integer.toString(num);
 		Set<Integer> set = new HashSet();
-		
-		for(int i =0; i<n.length(); i++) {
-			for(int j = n.length(); j>i;j--) {
+
+		for (int i = 0; i < n.length(); i++) {
+			for (int j = n.length(); j > i; j--) {
 //				System.out.println(j);
-				set.add(Integer.parseInt(n.substring(i,j)));
+				set.add(Integer.parseInt(n.substring(i, j)));
 			}
 		}
 //		System.out.println(set);
-		Set<Integer> setPrime =  new HashSet<>();
-		for(Integer i:set) {
-			if(isPrime(i))setPrime.add(i);
+		Set<Integer> setPrime = new HashSet<>();
+		for (Integer i : set) {
+			if (isPrime(i))
+				setPrime.add(i);
 		}
 		return setPrime.stream().mapToInt(Integer::intValue).toArray();
-		
+
 	}
-	
+
 	boolean isHappyRecursion(int n) {
 		int a = 0;
 		int res = isHappySupport(n);
 		System.out.println(res);
-		return res==1;
-		
+		return res == 1;
+
 	}
-	
+
 	private int isHappySupport(int n) {
-		int sum =0;
-		while(n>0) {
+		int sum = 0;
+		while (n > 0) {
 //			int sum =0;
-			sum = sum+ (int)Math.pow((n%10), 2);
-			n/=10;
+			sum = sum + (int) Math.pow((n % 10), 2);
+			n /= 10;
 		}
 //		System.out.println(sum);
-		if(sum ==1 || sum ==4) {
+		if (sum == 1 || sum == 4) {
 			return sum;
 		}
 		return isHappySupport(sum);
-		
+
 	}
 
 	int split25(int num) {
-		
-		if(num >= 1 && num<5) return num;
+
+		if (num >= 1 && num < 5)
+			return num;
 		int n3 = 0;
 		int n2 = 0;
 		int temp = num;
-		while(temp>0) {
-			temp = temp-3;
+		while (temp > 0) {
+			temp = temp - 3;
 			n3++;
-			
-			if(temp !=0 && temp<3) {
-				if(temp == 2) n2=1;
-				if(temp == 1) {
+
+			if (temp != 0 && temp < 3) {
+				if (temp == 2)
+					n2 = 1;
+				if (temp == 1) {
 					n2 = 2;
 					n3--;
 				}
 				temp = 0;
 			}
 		}
-		return (int)(Math.pow(3, n3)*Math.pow(2, n2));
+		return (int) (Math.pow(3, n3) * Math.pow(2, n2));
 	}
 
 	boolean isLeapYear(int y) {
@@ -2458,7 +2556,8 @@ public class TriangleDots {
 	}
 
 	boolean isPrime(int num) {
-		if(num ==0) return false;
+		if (num == 0)
+			return false;
 		if (num == 1)
 			return false;
 		for (int i = 2; i < num; i++)
@@ -2924,7 +3023,13 @@ public class TriangleDots {
 //		System.out.println(td.isDisarium(598));
 //		System.out.println(td.kaprekar(101));
 //		System.out.println(td.whoGoesFree(7, 3));
-		System.out.println(td.superDigit("9875", 4));
+//		System.out.println(td.superDigit("9875", 4));
+//		System.out.println(td.palindromeDescendant(1122332211));
+//		System.out.println(td.ascending("444445"));
+//		System.out.println(td.cFuge(21, 18));
+//		System.out.println(td.multiplyBy11WithTwist("9473745364784876253253263723"));
+		System.out.println(td.weighOnMars(100)+"kg");
+
 	}
 
 }

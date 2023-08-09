@@ -14,6 +14,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.Set;
 import java.util.Stack;
 import java.util.TreeMap;
 import java.util.function.Function;
@@ -24,197 +25,361 @@ import javax.xml.stream.events.Characters;
 
 public class StringWordCount {
 	
+	int minPalindromeSteps(String str) {
+		int counter =0;
+		if(isPalindrome(str)) return counter;
+		
+		List<String> list = new ArrayList<>();
+		for(int i =0; i<str.length();i++) list.add(str.charAt(i)+"");
+		
+		String temp = str;
+		String result = str;
+		int i = 0;
+		while(str.length()>0) {
+			temp = result;
+			for(int j =0; j<list.size();j++){
+				temp = temp+list.get(j);
+				if(isPalindrome(temp)) {
+					result = temp;
+					break;
+				}
+			}
+			if(isPalindrome(result)) {
+				counter++;
+				break;
+			}
+			counter++;
+			result = result + str.charAt(str.length()-1-counter);
+		}
+		System.out.println(result);
+		return counter;
+	}
+	
+	
+	String extractFileId(String photoUrl) {
+		
+		String result = photoUrl.replaceAll("https://localhost:8080/fileApi/file/view/", "");
+		return result;
+	}
+	
+	
+	int wordOccurence(String str, String word) {
+		int result = 0;
+		word = word.toLowerCase();
+		str = str.toLowerCase();
+		int wLen = word.length();
+		String temp = str.replaceAll(word, "");
+		int len = str.length()-temp.length();
+		if(len == 0) return result;
+		else {
+			result = len/wLen;
+			return result;
+		}
+		
+	}
+	
+
+	String hiddenAnagram(String t, String p) {
+		
+		String result = "";
+		t=t.toLowerCase().replaceAll("[^a-z]", "");
+		p=p.toLowerCase().replaceAll("[^a-z]", "");
+		List<String> pList = new LinkedList<>();
+		List<String> tempList = new LinkedList<>();
+		for(int i =0; i <p.length();i++) {
+			pList.add(p.charAt(i)+"");
+		}
+		tempList.addAll(pList);
+		
+		for(int i =0;i<t.length();i++) {
+			int c = i;
+			for(int j=0;j<p.length();j++) {
+				char ch = t.charAt(c);
+				if(c>=t.length()-1 || !tempList.contains(ch+"")) {
+					result="";
+					break;
+				}
+				c++;
+				result = result+ch;
+				tempList.remove(ch+"");
+				
+			}
+			
+			if(tempList.size()==0) break;
+			tempList.clear();
+			tempList.addAll(pList);
+		}
+		if(result.length()==0) return "nout fond";
+		return result;
+	}
+	
+	String generateNonConsecutiveBinaryString(int n) {
+
+		String result = "0 1";
+
+		String binString = "";
+		int incrementor = 0;
+		while (binString.length() <= n) {
+			binString = Integer.toBinaryString(incrementor);
+			
+			if ( binString.length() >n) break;
+			
+			for (int i = 0; i < binString.length() - 1; i++) {
+				if (binString.charAt(i) == '1' && binString.charAt(i + 1) == '1') {
+					break;
+				}
+				if (i == binString.length() - 2)
+					result = result + " " + binString;
+			}
+			incrementor++;
+		}
+
+		return result;
+	}
+
+	String isValidExpert(String str) {
+//		String temp = str;
+		Set<Integer> set = new HashSet<>();
+		List<Integer> list = new ArrayList<>();
+		String res = "";
+		for (int i = 0; i < str.length(); i++) {
+			char ch = str.charAt(i);
+			if (res.contains(ch + ""))
+				continue;
+
+			int len = str.replaceAll("[^" + ch + "]", "").length();
+			System.out.println(len);
+			res = res + ch;
+			set.add(len);
+			list.add(len);
+//			str = str.replaceAll(""+ch, "");
+			System.out.println(str + " i:" + i);
+		}
+		System.out.println(list);
+		System.out.println(" set:" + set.size());
+		System.out.println(" list:" + list.size());
+
+		if (set.size() >= 2) {
+			if (set.size() == 2) {
+				Integer[] arr = set.toArray(new Integer[set.size()]);
+				System.out.println(Arrays.toString(arr));
+				if (Math.abs(arr[1] - arr[0]) != 1)
+					return "No";
+
+				Collections.sort(list);
+				int c = 0;
+				int t = list.get(0);
+				for (Integer i : list) {
+					if (i > t)
+						c++;
+				}
+				if (c > 1)
+					return "No";
+			} else
+				return "No";
+		}
+
+		return "Yes";
+	}
+
 	String encryption(String s1) {
 		String s = s1.replaceAll(" ", "");
 		int len = s.length();
 		System.out.println(len);
 		int r = 0;
-		int c=0;
+		int c = 0;
 		int t = 0;
-		for(int i =1; i<len/2;i++) {
-			t = (int)(len/(Math.pow(i, 2)));
-			if(t<=0) {
+		for (int i = 1; i < len / 2; i++) {
+			t = (int) (len / (Math.pow(i, 2)));
+			if (t <= 0) {
 				t = i;
 				break;
 			}
 		}
-		
-		if(Math.pow(t, 2) > len) {
-			c= t;
-			r=t-1;
+
+		if (Math.pow(t, 2) > len) {
+			c = t;
+			r = t - 1;
+		} else {
+			c = t;
+			r = t;
 		}
-		else {
-			c=t;
-			r=t;
+		if (c * r < len) {
+			c = t;
+			r = t;
 		}
-		if(c*r<len) {
-			c=t;
-			r=t;
-		}
-		System.out.println(" c:"+c+" r="+r);
+		System.out.println(" c:" + c + " r=" + r);
 		List<String> list = new ArrayList<>();
-		
+
 		int index = 0;
-		for(int i =0; i<r;i++) {
+		for (int i = 0; i < r; i++) {
 			String res = "";
-			for(int j = 0;j<c; j++) {
-				
-				if((i==r-1)) {
-					if(index==(len-1)) {
-						int temp = c-res.length();
-						res = res+ s.charAt(index) +" ".repeat(temp);
-						break;	
+			for (int j = 0; j < c; j++) {
+
+				if ((i == r - 1)) {
+					if (index == (len - 1)) {
+						int temp = c - res.length();
+						res = res + s.charAt(index) + " ".repeat(temp);
+						break;
 					}
-					
+
 				}
-				System.out.println("index: "+index+" i:"+i+" j="+j);
-				res = res+s.charAt(index);
+				System.out.println("index: " + index + " i:" + i + " j=" + j);
+				res = res + s.charAt(index);
 				index++;
 			}
 			list.add(res);
 		}
-		System.out.println("list:"+list);
-		
+		System.out.println("list:" + list);
+
 		String result = "";
-		for(int j = 0; j<list.get(0).length(); j++) {
-			for(int i =0; i<list.size();i++) {
-				if(list.get(i).charAt(j)==' ') continue;
-				result = result +list.get(i).charAt(j);
+		for (int j = 0; j < list.get(0).length(); j++) {
+			for (int i = 0; i < list.size(); i++) {
+				if (list.get(i).charAt(j) == ' ')
+					continue;
+				result = result + list.get(i).charAt(j);
 			}
-			result = result +" ";
+			result = result + " ";
 		}
 		return result.trim();
 	}
-	
+
 	String pilish_string(String s) {
 		String result = "";
 		String str = s;
 		String pi = "314159265358979";
 		int index = 0;
-		int i =0;
-		while(str.length()>0) {
-			
-			int temp = Integer.parseInt(pi.charAt(index)+"");
-			if(index==pi.length()-1) break;
-			if(temp < str.length()) {
-				result  = result + " "+ str.substring(0,temp);
+		int i = 0;
+		while (str.length() > 0) {
+
+			int temp = Integer.parseInt(pi.charAt(index) + "");
+			if (index == pi.length() - 1)
+				break;
+			if (temp < str.length()) {
+				result = result + " " + str.substring(0, temp);
 				str = str.substring(temp);
 				index++;
-				i=i+temp;
+				i = i + temp;
 //				System.out.println(result);
 				continue;
 			}
-			int diff = temp-str.length();
-			String t = str+str.substring(str.length()-1).repeat(diff);
-			result = result + " "+t;
+			int diff = temp - str.length();
+			String t = str + str.substring(str.length() - 1).repeat(diff);
+			result = result + " " + t;
 			break;
 		}
 		return result.trim();
 	}
-	
+
 	boolean ascending(String str) {
 		String s = str;
 		int counter = 0;
-		for(int i =0; (i+3)<str.length(); i=i+3) {
-			String temp =s.substring(i,i+3);
-			int a = Integer.parseInt(temp.charAt(0)+"");
-			int b = Integer.parseInt(temp.charAt(1)+"");
-			int c = Integer.parseInt(temp.charAt(2)+"");
-			if((a<b && b<c) || (a==b && b==c)) continue;
+		for (int i = 0; (i + 3) < str.length(); i = i + 3) {
+			String temp = s.substring(i, i + 3);
+			int a = Integer.parseInt(temp.charAt(0) + "");
+			int b = Integer.parseInt(temp.charAt(1) + "");
+			int c = Integer.parseInt(temp.charAt(2) + "");
+			if ((a < b && b < c) || (a == b && b == c))
+				continue;
 			else {
 				counter++;
 				break;
 			}
-			
+
 		}
-		if(counter!=0 && str.length()!=0) return false;
-		if(counter != 0) {
-			for(int i =0; (i+2)<str.length(); i=i+2) {
-				String temp =s.substring(i,i+2);
-				int a = Integer.parseInt(temp.charAt(0)+"");
-				int b = Integer.parseInt(temp.charAt(1)+"");
-				if(a==b || a<b) {
+		if (counter != 0 && str.length() != 0)
+			return false;
+		if (counter != 0) {
+			for (int i = 0; (i + 2) < str.length(); i = i + 2) {
+				String temp = s.substring(i, i + 2);
+				int a = Integer.parseInt(temp.charAt(0) + "");
+				int b = Integer.parseInt(temp.charAt(1) + "");
+				if (a == b || a < b) {
 					s = temp;
 					continue;
-				}
-				else {
+				} else {
 					counter++;
 					break;
 				}
 			}
 			counter--;
 		}
-		
-		return counter==0;
+
+		return counter == 0;
 	}
-	
-	
-	//https://edabit.com?a=1&b=2&a=2
+
+	// https://edabit.com?a=1&b=2&a=2
 	String stripUrlParams(String url) {
-		
+
 		String[] str = url.split("\\?");
-		if(str.length==1) return str[0];
-		
-		Map<String, String> map =  new HashMap<>();
+		if (str.length == 1)
+			return str[0];
+
+		Map<String, String> map = new HashMap<>();
 		String[] strAfter = str[1].split("&");
-		for(int i =0;i<strAfter.length;i++) {
-			map.put(strAfter[i].substring(0,1), strAfter[i].substring(2));
+		for (int i = 0; i < strAfter.length; i++) {
+			map.put(strAfter[i].substring(0, 1), strAfter[i].substring(2));
 		}
-		
+
 		String res = "";
-		for(var entry : map.entrySet()) {
-			res = res + entry.getKey()+"="+entry.getValue()+"&";
+		for (var entry : map.entrySet()) {
+			res = res + entry.getKey() + "=" + entry.getValue() + "&";
 		}
-		
-		return str[0]+"?"+res.substring(0,res.length()-1);
+
+		return str[0] + "?" + res.substring(0, res.length() - 1);
 	}
-	
+
 	long repeatedString(String s, long n) {
-		if(n<s.length()) return s.substring(0, (int)n).replaceAll("[^a]", "").length();
+		if (n < s.length())
+			return s.substring(0, (int) n).replaceAll("[^a]", "").length();
 		long tLen = s.length();
 		long len = s.replaceAll("[^a]", "").length();
-		System.out.println(len+" "+tLen);
-		long numRepratedS =  (long) n/tLen;
-		
-		if(numRepratedS*tLen != n ) {
-			long rem = n-(numRepratedS*tLen);
-			int val = s.substring(0,(int)rem).replaceAll("[^a]", "").length();
-			return numRepratedS*len + val;
+		System.out.println(len + " " + tLen);
+		long numRepratedS = (long) n / tLen;
+
+		if (numRepratedS * tLen != n) {
+			long rem = n - (numRepratedS * tLen);
+			int val = s.substring(0, (int) rem).replaceAll("[^a]", "").length();
+			return numRepratedS * len + val;
 		}
-		
+
 		System.out.println(numRepratedS);
-		return numRepratedS*len;
+		return numRepratedS * len;
 	}
-	
+
 	boolean isZygodrome(long num) {
 		String n = Long.toString(num);
-		if(n.length()<2) return false;
-		for(int i =0; i<n.length();i++) {
-			if(i == 0) {
-				if(n.charAt(i)!=n.charAt(i+1))return false;
+		if (n.length() < 2)
+			return false;
+		for (int i = 0; i < n.length(); i++) {
+			if (i == 0) {
+				if (n.charAt(i) != n.charAt(i + 1))
+					return false;
 				continue;
 			}
-			if(i == n.length()-1) {
+			if (i == n.length() - 1) {
 				System.out.println("here");
-				 if(n.charAt(i)!=n.charAt(i-1))	return false;
-				 continue;
+				if (n.charAt(i) != n.charAt(i - 1))
+					return false;
+				continue;
 			}
-			if(n.charAt(i)!=n.charAt(i-1) && n.charAt(i)!=n.charAt(i+1)) return false;
+			if (n.charAt(i) != n.charAt(i - 1) && n.charAt(i) != n.charAt(i + 1))
+				return false;
 		}
 		return true;
 	}
 
 	String correctTitle(String str) {
 		String result = "";
-		List<String> list = List.of("and", "the","of","in");
+		List<String> list = List.of("and", "the", "of", "in");
 		String[] s = str.toLowerCase().split(" ");
-		
-		for(int i =0; i<s.length; i++) {
-			if(list.contains(s[i])) {
-				result = result +" "+s[i];
+
+		for (int i = 0; i < s.length; i++) {
+			if (list.contains(s[i])) {
+				result = result + " " + s[i];
 				continue;
 			}
-			result = result +" "+ Character.toUpperCase(s[i].charAt(0))+s[i].substring(1);
+			result = result + " " + Character.toUpperCase(s[i].charAt(0)) + s[i].substring(1);
 		}
 		return result.trim();
 	}
@@ -3852,7 +4017,13 @@ public class StringWordCount {
 //		System.out.println(swc.stripUrlParams("https://edabit.com?a=1&b=2&c=3&d=4&c=5"));
 //		System.out.println(swc.ascending("666667"));
 //		System.out.println(swc.pilish_string("33314444155555999999999226666665555533355555888888889999999997777777999999999"));
-		System.out.println(swc.encryption("One should not worry over things that have already happened and that cannot be changed."));
+//		System.out.println(swc.encryption("One should not worry over things that have already happened and that cannot be changed."));
+//		System.out.println(swc.isValidExpert("aabbccddeefghi"));
+//		System.out.println(swc.generateNonConsecutiveBinaryString(7));
+//		System.out.println(swc.hiddenAnagram("Banana? margaritas", "ANAGRAM"));
+//		System.out.println(swc.wordOccurence("I love nirali and nirali is my love oh nirali come to me", "love"));
+//		System.out.println((swc.extractFileId("https://localhost:8080/fileApi/file/view/64c4387b7ab92e4f63fc0856")));
+		System.out.println(swc.minPalindromeSteps("race"));
 	}
 
 }
