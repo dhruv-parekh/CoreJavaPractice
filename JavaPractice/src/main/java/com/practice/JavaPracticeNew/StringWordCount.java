@@ -20,10 +20,94 @@ import java.util.TreeMap;
 import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collector;
+import java.util.stream.Stream;
 
 import javax.xml.stream.events.Characters;
 
 public class StringWordCount {
+	
+	
+	
+	boolean palindromeString( String str) {
+		return str.equals(new StringBuilder(str).reverse().toString());
+	}
+	
+	boolean stringContainsVowels(String input) {
+//		return !(input.length() == input.toLowerCase().replaceAll("[aeiou]", "").length());
+		return input.toLowerCase().matches(".*[aeiou].*");
+	}
+	String reverseString( String str) {
+		return new StringBuilder(str).reverse().toString();
+	}
+	
+	String returnPigLatinAns(String s) {
+		String vowels = "aeiouAEIOU";
+		String[] str = s.split(" ");
+		String result = "";
+		String temp = "";
+ 		for(int i =0; i<str.length;i++){
+			if( vowels.contains(str[i].charAt(0)+"")) {
+				if(Character.isAlphabetic(str[i].charAt(str[i].length()-1))) {
+				result = result+" " +str[i]+"yay";
+				
+				}
+				else {
+					char sign1 = str[i].charAt(str[i].length()-1);	
+					result = result+" " +str[i].substring(0,str[i].length()-1)+"yay"+sign1;
+				
+				}
+				continue;
+			}
+			temp = str[i];
+			for(int j =0;j<str[i].length();j++) {
+				
+				if(Character.isAlphabetic(temp.charAt(temp.length()-1))) {
+					char c = temp.charAt(0);
+					temp = temp.substring(1)+c;
+					if( vowels.contains(temp.charAt(0)+"")) {
+						result = result+" "+temp+"ay";
+						break;
+					}
+				}
+				else {
+					char sign = temp.charAt(temp.length()-1);
+					temp = temp.substring(0,temp.length()-1);
+					char c = temp.charAt(0);
+					temp = temp.substring(1)+c;
+					if( vowels.contains(temp.charAt(0)+"")) {
+						result = result+" "+temp+"ay"+sign;
+						break;
+					}
+				}
+			}
+			
+		}
+		return result.trim().toLowerCase();
+	}
+	
+	
+	String findLongestWordInSentence(String sentence) {
+	 String	s[] = sentence.replaceAll("[^a-zA-Z\\s]", "").split(" ");
+	 
+	 String result ="";
+	 for(int i =0; i<s.length;i++) {
+		 result = s[i].length()>result.length()?s[i]:result;
+	 }
+	  return result;
+	}
+	
+	String reverseSort(String str) {
+		String result = "";
+		
+		String[] arr = str.split("\\s");
+		
+		Arrays.sort(arr, (a,b)->Integer.compare(b.length(), a.length()));
+		
+		for(int i =0; i<arr.length;i++) result = result + " "+arr[i];
+		
+		return result.trim();
+	}
 	
 	int minPalindromeSteps(String str) {
 		int counter =0;
@@ -4023,7 +4107,14 @@ public class StringWordCount {
 //		System.out.println(swc.hiddenAnagram("Banana? margaritas", "ANAGRAM"));
 //		System.out.println(swc.wordOccurence("I love nirali and nirali is my love oh nirali come to me", "love"));
 //		System.out.println((swc.extractFileId("https://localhost:8080/fileApi/file/view/64c4387b7ab92e4f63fc0856")));
-		System.out.println(swc.minPalindromeSteps("race"));
+//		System.out.println(swc.minPalindromeSteps("race"));
+//		System.out.println(swc.reverseSort("Tesha is a woman of true substance and a beauty."));
+//		System.out.println(swc.findLongestWordInSentence("The word strengths is the longest and most commonly used word with a single vowel."));
+//		System.out.println(swc.returnPigLatinAns("Do you think it is going to rain today?"));
+//		System.out.println(swc.reverse("123456789"));
+//		System.out.println(swc.palindromeString("naman"));
+		
+		
 	}
 
 }

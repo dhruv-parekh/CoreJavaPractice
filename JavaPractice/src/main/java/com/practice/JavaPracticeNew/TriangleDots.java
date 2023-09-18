@@ -21,6 +21,7 @@ import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
@@ -28,11 +29,73 @@ import java.util.stream.IntStream;
 
 public class TriangleDots {
 	StringWordCount swc;
-	
+
+	void printFibonacciSequenceUsingRecusion(int count) {
+
+		// recursion
+		int a = 0, b = 1;
+		count = count - 2;
+		System.out.print(a + " " + b + " ");
+		recurFib(a, b, count);
+
+		// no recursion
+		// int a =0, b = 1;
+//		System.out.print(a+" "+b);
+//		int temp=0;
+//		for(int i =2; i<count;i++) {
+//			temp = a+b;
+//			System.out.print(" "+temp);
+//			a=b;b=temp;
+//		}
+	}
+
+	private void recurFib(int a, int b, int count) {
+		if (count == 0)
+			System.out.println("");
+		else {
+			int temp = a + b;
+			System.out.print(temp + " ");
+			a = b;
+			b = temp;
+			count--;
+			recurFib(a, b, count);
+		}
+	}
+
+	void swapNumbersWithoutThirdVar(int a, int b) {
+
+		a = a + b;
+		b = a - b;
+		a = a - b;
+
+		System.out.println("a: " + a + " b:" + b);
+
+	}
+
+	boolean cigarParty(int cigars, boolean isWeekend) {
+
+		if (isWeekend) {
+			if (cigars >= 40)
+				return true;
+			return false;
+		}
+		if (cigars >= 40 && cigars <= 60)
+			return true;
+		return false;
+	}
+
+	void randomEvenOrOdd() {
+
+		Random r = new Random();
+		int num = 1 + r.nextInt(100);
+		String result = num % 2 == 0 ? "even" : "odd";
+		System.out.println(num + " is " + result);
+	}
+
 	double weighOnMars(double weight) {
-		
-		return new BigDecimal((weight*3.73)/9.81).setScale(2, RoundingMode.HALF_EVEN).doubleValue();
-		
+
+		return new BigDecimal((weight * 3.73) / 9.81).setScale(2, RoundingMode.HALF_EVEN).doubleValue();
+
 	}
 
 	String multiplyBy11WithTwist(String n) {
@@ -3028,7 +3091,10 @@ public class TriangleDots {
 //		System.out.println(td.ascending("444445"));
 //		System.out.println(td.cFuge(21, 18));
 //		System.out.println(td.multiplyBy11WithTwist("9473745364784876253253263723"));
-		System.out.println(td.weighOnMars(100)+"kg");
+//		System.out.println(td.weighOnMars(100)+"kg");
+//		td.randomEvenOrOdd();
+//		td.swapNumbersWithoutThirdVar(-1,-2);
+		td.printFibonacciSequenceUsingRecusion(15);
 
 	}
 

@@ -25,6 +25,111 @@ import com.practice.classes.Chapter;
 
 public class ArrayPractice {
 	
+	
+	int longestPeriod(String s) {
+		
+		String[] arr = s.split("\\n");
+		System.out.println(Arrays.toString(arr));
+		return 0;
+	}
+	
+	int[] sortWithMergeSort(int[] arr) {
+		int[] sortedArr = mergeSort(arr, 0,arr.length-1);
+		return sortedArr;
+	}
+	
+	
+	private int[] mergeSort(int[] arr, int low, int high) {
+		if(low == high) {
+			int[] a = new int[1];
+			a[0]=arr[low];
+			return a;
+		}
+		int mid = (low+high)/2;
+		int[] firstArray = mergeSort(arr, low,mid);
+		int[] secondArray = mergeSort(arr,mid+1,high);
+		
+		int[] sortedArr = mergeTwoSortedArrays(firstArray,secondArray);
+		
+		return sortedArr;
+	}
+
+
+	private int[] mergeTwoSortedArrays(int[] firstArray, int[] secondArray) {
+		int[] sortedArray = new int[firstArray.length+secondArray.length];
+		int i=0;
+		int j=0;
+		int k=0;
+		
+		while(i<firstArray.length && j<secondArray.length) {
+			if(firstArray[i]<secondArray[j]) {
+				sortedArray[k]=firstArray[i];
+				i++;
+				k++;
+			}
+			else {
+				sortedArray[k] = secondArray[j];
+				j++;
+				k++;
+			}
+		}
+		
+		if(i == firstArray.length) {
+			while(j<secondArray.length)
+					 {
+				sortedArray[k]=secondArray[j];
+				k++;
+				j++;
+			}
+		}
+		
+		if(j == secondArray.length) {
+			while(i<firstArray.length)
+					 {
+				sortedArray[k]=firstArray[i];
+				k++;
+				i++;
+			}
+		}
+		
+		
+		return sortedArray;
+	}
+
+
+	boolean binarySearchTree(int[] arr, int low, int high, int key) {
+		
+		Arrays.sort(arr);
+		System.out.println(Arrays.toString(arr));
+		while(low<= high) {
+			int mid = (low+high)/2;
+			if(key == arr[mid]) return true;
+			else if(key>arr[mid]) low = mid+1;
+			else high=mid-1;
+		}
+		return false;
+		
+//		Arrays.sort(arr);
+//		int n =1;
+//			int middle = arr.length/2;
+//			if(key== arr[middle]) {
+//				return true;
+//			}
+//			if(key>arr[middle]) {
+//				for(int i = middle-1;i<arr.length;i++) {
+//					if(key == arr[i])return true;
+//				}
+//			}
+//			else {
+//				for(int i = 0;i<arr[middle];i++) {
+//					if(key == arr[i])return true;
+//				}
+//			}
+//		return false;
+		
+	}
+	
+	
 	int[][] sumsUp(int[] n) {
 		
 		Set<int[]> set = new HashSet<>();
@@ -1940,7 +2045,7 @@ public class ArrayPractice {
 //			{true, true, true, 9, 10, 11, 12}
 //		})));
 //		System.out.println(ap.uniquely(new String[] {"to", "too", "t"}, new String[] {"topology", "took", "torrent"}));
-//		System.out.println(Arrays.toString(ap.characterMapping("canine")));
+//		System.out.println(Arrays.toString(ap.characterMapping("canine")));c
 //		System.out.println(Arrays.deepToString(ap.pairs(new int[] {1, 9, 8, 7, 6})));
 //		String str1 = "For the love of Tesh. She is the love of my life. I am all hers.";
 //		String str2 = "I have a cat. I have a mat. Things are going swell.";
@@ -1954,6 +2059,7 @@ public class ArrayPractice {
 //		System.out.println(Arrays.toString(ap.returnUnique(new int[] {-9,-9,-9, 7,-9,-9, 1})));
 //		System.out.println(Arrays.toString(ap.collect("recollection", 3)));
 //		System.out.println(
+		
 //				ap.wrongNumber(new int[][] { { 1, 2, 3, 6 }, { 4, 5, 6, 115 }, { 7, 8, 9, 24 }, { 12, 15, 18, 46 } }));
 //		System.out.println(Arrays.toString(ap.sortContacts(new String[] {},"asc")));
 //		System.out.println(ap.generateString(6, new String[] {"n", "k"}));
@@ -1980,7 +2086,11 @@ public class ArrayPractice {
 //		System.out.println(Arrays.toString(ap.getItemsAt(new Object[] {"A", "R", "B", "I", "T", "R", "A", "R", "I", "L", "Y"},"even")));
 //		System.out.println(Arrays.toString(ap.bucketize("she sells sea shells by the sea", 10)));
 //		System.out.println(Arrays.toString(ap.join(new String[]{"move", "over", "very"})));
-		System.out.println(Arrays.deepToString(ap.sumsUp(new int[] {5, 7, 2, 3, 0, 1, 6, 4, 8})));
+//		System.out.println(Arrays.deepToString(ap.sumsUp(new int[] {5, 7, 2, 3, 0, 1, 6, 4, 8})));
+//		System.out.println(ap.binarySearchTree(new int[] {25,38,26,1,2,3,4,5,6,7,8,9,10,11,12}, 1 , 16, 38 ));
+//		System.out.println(Arrays.toString(ap.sortWithMergeSort(new int[] {9,8,7,5,6,4,3,2,0,1})));
+		System.out.println(ap.longestPeriod("abc"));
+		System.out.println("s\sb\nc");
+		int a  = Integer.parseInt(null);
 	}
-
 }

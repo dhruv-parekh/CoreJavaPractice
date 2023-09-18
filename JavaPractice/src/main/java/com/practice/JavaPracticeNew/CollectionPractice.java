@@ -24,6 +24,38 @@ import java.util.stream.IntStream;
 
 public class CollectionPractice {
 	
+	LinkedList<Integer> reverseLinkedList(LinkedList<Integer> list){
+		Collections.reverse(list);
+		return list;
+		
+	}
+	
+	
+	boolean containsOdds(List<Integer> list) {
+		for(Integer a : list) {
+			if(a%2==0) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	Map<Object, Integer> countRepititions(Object[] e) {
+		Map<Object, Integer> map = new LinkedHashMap<>();
+		
+		for(int i =0 ; i< e.length;i++) {
+			if(map.containsKey(e[i])) {
+				int temp = map.get(e[i]);
+				temp++;
+				System.out.println(temp);
+				map.put(e[i], temp);
+			}
+			else map.put(e[i], 1);
+		}
+		return map;
+		
+	}
+	
 	String listToString(List<String> list) {
 		
 		String result= "";
@@ -660,12 +692,23 @@ public class CollectionPractice {
 //		System.out.println(cp.bonacci(5, 10));
 //		System.out.println(cp.singleNumber(new int[] {-1, 2, -4, 20, -1, 2, -4, -4, 2, -1}));
 //		System.out.println(Arrays.toString(cp.collect("pneumonoultramicroscopicsilicovolcanoconiosis", 22)));
-		List<String> list = new ArrayList<>();
-		list.add("dhruv");
-		list.add("you");
-		list.add("rock");
-		System.out.println(cp.listToString(list));
-
+//		List<String> list = new ArrayList<>();
+//		list.add("dhruv");
+//		list.add("you");
+//		list.add("rock");
+//		System.out.println(cp.listToString(list));
+		
+//		System.out.println(cp.countRepititions(new Object[] {"Infinity", "null", "Infinity", "null", "null"}));
+		List<Integer> list =  new ArrayList<>();
+		System.out.println(cp.containsOdds(List.of(11,13,15,23,21)));
+		
+		LinkedList<Integer> list1 = new LinkedList<>();
+		list1.add(1);
+		list1.add(2);
+		list1.add(3);
+		list1.add(4);
+		System.out.println(cp.reverseLinkedList(list1));
+	
 	}
 
 }
